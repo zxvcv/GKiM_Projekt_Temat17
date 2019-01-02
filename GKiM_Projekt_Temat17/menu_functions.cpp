@@ -12,8 +12,8 @@ void funkcja1()
 	color_b.r = 0; color_b.g = 0; color_b.b = 0; //czarny
 	color_r.r = 255; color_r.g = 0; color_r.b = 0; //czerwony
 	color_g.r = 0; color_g.g = 255; color_g.b = 0; //zielony
-	Text top_text(100, 20, "WPROWADZ NAZWE PLIKU TEKSTOWEGO,", color_b, 1);
-	Text top_text2(100, 60, " I ZATWIERDZ KLAWISZEM ENTER", color_b, 1);
+	Text top_text(20, 20, "WPROWADZ NAZWE PLIKU TEKSTOWEGO,", color_b, 1);
+	Text top_text2(20, 60, " I ZATWIERDZ KLAWISZEM ENTER", color_b, 1);
 	Text filename_text(25, 100, filename.c_str(), color_b, 0);
 
 
@@ -144,7 +144,7 @@ void funkcja3()
 	//inicjalizacja Menu2
 	{
 		SDL_Rect dim;
-		SDL_Color color;
+		SDL_Color color_y, color_r, color_b;
 
 		dim.x = 10; dim.y = 100; dim.w = 300; dim.h = 50;
 		Menu2.buttons.push_back(Button(dim, &texture_type[NONE]));
@@ -161,22 +161,18 @@ void funkcja3()
 		dim.x = 10; dim.y = 460; dim.w = 300; dim.h = 50;
 		Menu2.buttons.push_back(Button(dim, &texture_type[NONE]));
 
-		color.r = 255; color.g = 255; color.b = 0;
-		Menu2.texts.push_back(Text(25, 115, "paleta narzucona", color, 0));
-		color.r = 255; color.g = 255; color.b = 0;
-		Menu2.texts.push_back(Text(25, 175, "paleta narzucona + dithering", color, 0));
-		color.r = 255; color.g = 255; color.b = 0;
-		Menu2.texts.push_back(Text(25, 235, "paleta dedykowana", color, 0));
-		color.r = 255; color.g = 255; color.b = 0;
-		Menu2.texts.push_back(Text(25, 295, "paleta dedykowana + dithering", color, 0));
-		color.r = 255; color.g = 255; color.b = 0;
-		Menu2.texts.push_back(Text(25, 355, "odcienie szarosci", color, 0));
-		color.r = 255; color.g = 255; color.b = 0;
-		Menu2.texts.push_back(Text(25, 415, "odcienie szarosci + dithering", color, 0));
-		color.r = 255; color.g = 0; color.b = 0;
-		Menu2.texts.push_back(Text(25, 475, "powrot", color, 0));
-		color.r = 0; color.g = 0; color.b = 0;
-		Menu2.texts.push_back(Text(100, 20, "KONWERSJA   BMP -> PC", color, 1));
+		color_y.r = 255; color_y.g = 255; color_y.b = 0;
+		color_r.r = 255; color_r.g = 0; color_r.b = 0;
+		color_b.r = 0; color_b.g = 0; color_b.b = 0;
+
+		Menu2.texts.push_back(Text(25, 115, "paleta narzucona", color_y, 0));
+		Menu2.texts.push_back(Text(25, 175, "paleta narzucona + dithering", color_y, 0));
+		Menu2.texts.push_back(Text(25, 235, "paleta dedykowana", color_y, 0));
+		Menu2.texts.push_back(Text(25, 295, "paleta dedykowana + dithering", color_y, 0));
+		Menu2.texts.push_back(Text(25, 355, "odcienie szarosci", color_y, 0));
+		Menu2.texts.push_back(Text(25, 415, "odcienie szarosci + dithering", color_y, 0));
+		Menu2.texts.push_back(Text(25, 475, "powrot", color_r, 0));
+		Menu2.texts.push_back(Text(100, 20, "KONWERSJA   BMP -> PC", color_b, 1));
 	}
 
 	bool done = false;
@@ -268,43 +264,29 @@ void funkcja5()
 	Menu Menu3;
 	//inicjalizacja Menu2
 	{
-		SDL_Color color;
+		SDL_Color color_g, color_s;
 
-		color.r = 0; color.g = 200; color.b = 0;
-		Menu3.texts.push_back(Text(100, 20, "INFORMACJE", color, 1));
-		color.r = 200; color.g = 200; color.b = 200;
-		Menu3.texts.push_back(Text(25, 100, "linijka1", color, 0));
-		color.r = 200; color.g = 200; color.b = 200;
-		Menu3.texts.push_back(Text(25, 125, "linijka2", color, 0));
-		color.r = 200; color.g = 200; color.b = 200;
-		Menu3.texts.push_back(Text(25, 150, "linijka3", color, 0));
-		color.r = 200; color.g = 200; color.b = 200;
-		Menu3.texts.push_back(Text(25, 175, "linijka4", color, 0));
-		color.r = 200; color.g = 200; color.b = 200;
-		Menu3.texts.push_back(Text(25, 200, "linijka5", color, 0));
-		color.r = 200; color.g = 200; color.b = 200;
-		Menu3.texts.push_back(Text(25, 225, "linijka6", color, 0));
-		color.r = 200; color.g = 200; color.b = 200;
-		Menu3.texts.push_back(Text(25, 250, "linijka7", color, 0));
-		color.r = 200; color.g = 200; color.b = 200;
-		Menu3.texts.push_back(Text(25, 275, "linijka8", color, 0));
-		color.r = 200; color.g = 200; color.b = 200;
-		Menu3.texts.push_back(Text(25, 300, "linijka9", color, 0));
-		color.r = 200; color.g = 200; color.b = 200;
-		Menu3.texts.push_back(Text(25, 325, "linijka10", color, 0));
-		color.r = 200; color.g = 200; color.b = 200;
-		Menu3.texts.push_back(Text(25, 350, "...", color, 0));
+		color_g.r = 0; color_g.g = 200; color_g.b = 0; //zielony
+		color_s.r = 200; color_s.g = 200; color_s.b = 200; //szary
 
-		color.r = 200; color.g = 200; color.b = 200;
-		Menu3.texts.push_back(Text(800, 625, "Projekt wykonali:", color, 0));
-		color.r = 200; color.g = 200; color.b = 200;
-		Menu3.texts.push_back(Text(800, 650, "  Karol Patko", color, 0));
-		color.r = 200; color.g = 200; color.b = 200;
-		Menu3.texts.push_back(Text(800, 675, "  Pawel Midura", color, 0));
-		color.r = 200; color.g = 200; color.b = 200;
-		Menu3.texts.push_back(Text(800, 700, "  Wojciech Maludzinski", color, 0));
-		color.r = 200; color.g = 200; color.b = 200;
-		Menu3.texts.push_back(Text(800, 725, "  Pawel Piskorz", color, 0));
+		Menu3.texts.push_back(Text(100, 20, "INFORMACJE", color_g, 1));
+		Menu3.texts.push_back(Text(25, 100, "linijka1", color_s, 0));
+		Menu3.texts.push_back(Text(25, 125, "linijka2", color_s, 0));
+		Menu3.texts.push_back(Text(25, 150, "linijka3", color_s, 0));
+		Menu3.texts.push_back(Text(25, 175, "linijka4", color_s, 0));
+		Menu3.texts.push_back(Text(25, 200, "linijka5", color_s, 0));
+		Menu3.texts.push_back(Text(25, 225, "linijka6", color_s, 0));
+		Menu3.texts.push_back(Text(25, 250, "linijka7", color_s, 0));
+		Menu3.texts.push_back(Text(25, 275, "linijka8", color_s, 0));
+		Menu3.texts.push_back(Text(25, 300, "linijka9", color_s, 0));
+		Menu3.texts.push_back(Text(25, 325, "linijka10", color_s, 0));
+		Menu3.texts.push_back(Text(25, 350, "...", color_s, 0));
+
+		Menu3.texts.push_back(Text(600, 475, "Projekt wykonali:", color_s, 0));
+		Menu3.texts.push_back(Text(600, 500, "  Karol Patko", color_s, 0));
+		Menu3.texts.push_back(Text(600, 525, "  Pawel Midura", color_s, 0));
+		Menu3.texts.push_back(Text(600, 550, "  Wojciech Maludzinski", color_s, 0));
+		Menu3.texts.push_back(Text(600, 575, "  Pawel Piskorz", color_s, 0));
 	}
 
 	SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0, 0, 0));

@@ -234,7 +234,7 @@ void INIT_MENU()
 	}
 	
 	SDL_Rect dim;
-	SDL_Color color;
+	SDL_Color color_y, color_r, color_b;
 
 	dim.x = 10; dim.y = 100; dim.w = 300; dim.h = 50;
 	A_Menu.buttons.push_back(Button(dim, &texture_type[NONE]));
@@ -249,20 +249,17 @@ void INIT_MENU()
 	dim.x = 10; dim.y = 450; dim.w = 300; dim.h = 50;
 	A_Menu.buttons.push_back(Button(dim, &texture_type[NONE]));
 
-	color.r = 255; color.g = 255; color.b = 0;
-	A_Menu.texts.push_back(Text(25, 115, "wprowadz nazwe obrazka", color, 0));
-	color.r = 255; color.g = 255; color.b = 0;
-	A_Menu.texts.push_back(Text(25, 175, "rysuj obrazek", color, 0));
-	color.r = 255; color.g = 255; color.b = 0;
-	A_Menu.texts.push_back(Text(25, 235, "konwersja  BMP -> PC", color, 0));
-	color.r = 255; color.g = 255; color.b = 0;
-	A_Menu.texts.push_back(Text(25, 295, "konwersja  PC -> BMP", color, 0));
-	color.r = 255; color.g = 255; color.b = 0;
-	A_Menu.texts.push_back(Text(25, 355, "informacje", color, 0));
-	color.r = 255; color.g = 0; color.b = 0;
-	A_Menu.texts.push_back(Text(25, 465, "KONIEC", color, 0));
-	color.r = 0; color.g = 0; color.b = 0;
-	A_Menu.texts.push_back(Text(100, 20, "MENU", color, 1));
+	color_y.r = 255; color_y.g = 255; color_y.b = 0;
+	color_r.r = 255; color_r.g = 0; color_r.b = 0;
+	color_b.r = 0; color_b.g = 0; color_b.b = 0;
+
+	A_Menu.texts.push_back(Text(25, 115, "wprowadz nazwe obrazka", color_y, 0));
+	A_Menu.texts.push_back(Text(25, 175, "rysuj obrazek", color_y, 0));
+	A_Menu.texts.push_back(Text(25, 235, "konwersja  BMP -> PC", color_y, 0));
+	A_Menu.texts.push_back(Text(25, 295, "konwersja  PC -> BMP", color_y, 0));
+	A_Menu.texts.push_back(Text(25, 355, "informacje", color_y, 0));
+	A_Menu.texts.push_back(Text(25, 465, "KONIEC", color_r, 0));
+	A_Menu.texts.push_back(Text(100, 20, "MENU", color_b, 1));
 }
 
 void MENU_show()

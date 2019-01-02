@@ -7,6 +7,8 @@
 
 using namespace std;
 
+extern SDL_Surface *input_file;
+
 /*
 ...opis...
 @param _		...

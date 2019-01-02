@@ -16,8 +16,8 @@
 
 using namespace std;
 
-const int width = 1024;
-const int height = 768;
+const int width = 800;
+const int height = 600;
 char const* tytul = "Projekt Temat 17";
 
 SDL_Surface *screen = nullptr;
