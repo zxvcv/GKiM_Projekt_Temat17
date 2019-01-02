@@ -1,11 +1,14 @@
 ﻿#include "pch.h"
 #include <iostream>
 #include <cstdlib>
+#include <SDL_ttf.h>
 #include <SDL.h>
 #include <math.h>
 #define pi 3.14
 #include <time.h>
 #include "SDL_functions.h"
+#include "view.h"
+#include "l_exceptions.h"
 
 #ifdef main
 #undef main
@@ -13,82 +16,64 @@
 
 using namespace std;
 
-
-SDL_Surface *screen;
-int width = 900;
-int height = 600;
+const int width = 1024;
+const int height = 768;
 char const* tytul = "Projekt Temat 17";
+
+SDL_Surface *screen = nullptr;
+SDL_Event event;
+
+SDL_Surface *input_file = nullptr;
+string filename;
+bool inactive = true;
+
+extern SDL_Surface *buttons_texture;
 
 
 int main(int argc, char* argv[])
 {
-    // console output
-    freopen( "CON", "wt", stdout );
-    freopen( "CON", "wt", stderr );
+	if (init_SDL() == false)
+		return 1;
 
-    // initialize SDL video
-    if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
-    {
-        printf( "Unable to init SDL: %s\n", SDL_GetError() );
-        return 1;
-    }
+	INIT_MENU();
 
-    // make sure SDL cleans up before exit
-    atexit(SDL_Quit);
 
-    // create a new window
-    screen = SDL_SetVideoMode(width, height, 32,SDL_HWSURFACE|SDL_DOUBLEBUF);
-    if( !screen )
-    {
-        printf("Unable to set video: %s\n", SDL_GetError());
-        return 1;
-    }
-
-    SDL_WM_SetCaption( tytul , NULL );
-    // program main loop
     bool done = false;
     while(!done)
     {
-        // message processing loop
-        SDL_Event event;
-        while (SDL_PollEvent(&event))
+        if (SDL_PollEvent(&event))
         {
-            // check for messages
+			MENU_event();
+
             switch (event.type)
             {
-                // exit if the window is closed
-            case SDL_QUIT:
+                
+            case SDL_QUIT: // exit if the window is closed
                 done = true;
                 break;
 
-                // check for keypresses
             case SDL_KEYDOWN:
-                {
-                    // exit if ESCAPE is pressed
-                    if (event.key.keysym.sym == SDLK_ESCAPE)
-                        done = true;
-                    if (event.key.keysym.sym == SDLK_1)
-                        Funkcja1();
-                    if (event.key.keysym.sym == SDLK_a)
-                        ladujBMP("obrazek1.bmp", 0, 0);
-                    if (event.key.keysym.sym == SDLK_s)
-                        ladujBMP("obrazek2.bmp", 0, 0);
-                    if (event.key.keysym.sym == SDLK_d)
-                        ladujBMP("obrazek3.bmp", 0, 0);
-                    if (event.key.keysym.sym == SDLK_f)
-                        ladujBMP("obrazek4.bmp", 0, 0);
-                    if (event.key.keysym.sym == SDLK_g)
-                        ladujBMP("obrazek5.bmp", 0, 0);
-                    if (event.key.keysym.sym == SDLK_b)
-                        czyscEkran(0, 0, 10);          break;
-                     }
-            } // end switch
-        } // end of message processing
+                if (event.key.keysym.sym == SDLK_ESCAPE)
+                    done = true;
+                if (event.key.keysym.sym == SDLK_b)
+					czyscEkran(0, 0, 10);
+				break;
+            }
+        }
 
-    } // end main loop
+		SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0xFF, 0xFF, 0xFF));
 
+		MENU_show();
 
-    // all is well ;)
-    printf("Exited cleanly\n");
+		if (SDL_Flip(screen) == -1)
+		{
+			clean_up();
+			return 1;
+		}
+    }
+
+	clean_up();
+
+	cout << "Exited cleanly" << endl;
     return 0;
 }

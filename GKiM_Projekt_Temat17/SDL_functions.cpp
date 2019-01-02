@@ -66,37 +66,78 @@ SDL_Color getPixel(int x, int y) {
 	return (color);
 }
 
-void ladujBMP(char const* nazwa, int x, int y)
+void ladujBMP(SDL_Surface** bmp, char const* nazwa, int x, int y)
 {
-	SDL_Surface* bmp = SDL_LoadBMP(nazwa);
 	if (!bmp)
 	{
-		printf("Unable to load bitmap: %s\n", SDL_GetError());
-	}
-	else
-	{
-		SDL_Rect dstrect;
-		dstrect.x = x;
-		dstrect.y = y;
-		SDL_BlitSurface(bmp, 0, screen, &dstrect);
-		SDL_Flip(screen);
-		SDL_FreeSurface(bmp);
+		SDL_FreeSurface(*bmp);
+		*bmp = nullptr;
 	}
 
+	*bmp = SDL_LoadBMP(nazwa);
+
+	if (!*bmp)
+		throw MyRuntimeExceptions::LoadImageException(SDL_GetError());
+}
+
+void wyswietlBMP(SDL_Surface* bmp, int x, int y)
+{
+	if (!bmp)
+		throw MyRuntimeExceptions::ReadImageException(SDL_GetError());
+
+	SDL_Rect offset;
+	offset.x = x;
+	offset.y = y;
+
+	SDL_BlitSurface(bmp, 0, screen, &offset);
 }
 
 void czyscEkran(Uint8 R, Uint8 G, Uint8 B)
 {
 	SDL_FillRect(screen, 0, SDL_MapRGB(screen->format, R, G, B));
 	SDL_Flip(screen);
-
 }
 
-
-
-void Funkcja1()
+void clean_up()
 {
-	//...
+	if (buttons_texture != nullptr)
+		SDL_FreeSurface(buttons_texture);
+	if (screen != nullptr)
+		SDL_FreeSurface(screen);
+	if (input_file != nullptr)
+		SDL_FreeSurface(input_file);
 
-	SDL_Flip(screen);
+	//Quit SDL_ttf
+	TTF_Quit();
+
+	//Quit SDL
+	SDL_Quit();
+}
+
+bool init_SDL()
+{
+	//Initialize all SDL subsystems
+	if (SDL_Init(SDL_INIT_EVERYTHING) == -1)
+	{
+		std::cout << "Unable to init SDL: " << SDL_GetError() << std::endl;
+		return false;
+	}
+
+	// create basic window
+	screen = SDL_SetVideoMode(width, height, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+	if (!screen)
+	{
+		std::cout << "Unable to set video: " << SDL_GetError() << std::endl;
+		return false;
+	}
+
+	//Set the window caption
+	SDL_WM_SetCaption("Button Test", NULL);
+
+	//inicjalizacjia SDL_tff
+	if (TTF_Init() < 0)
+		return false;
+
+	//If everything initialized fine
+	return true;
 }
