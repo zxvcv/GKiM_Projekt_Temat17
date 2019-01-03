@@ -4,6 +4,7 @@
 #include <iostream>
 #include <SDL.h>
 #include "l_exceptions.h"
+#include "SDL_functions.h"
 
 using namespace std;
 

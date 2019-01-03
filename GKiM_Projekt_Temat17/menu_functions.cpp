@@ -100,7 +100,6 @@ void funkcja2()
 {
 	SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 50, 50, 50));
 	
-	cout << input_file << endl;
 	try {
 		wyswietlBMP(input_file, 0, 0);
 	}

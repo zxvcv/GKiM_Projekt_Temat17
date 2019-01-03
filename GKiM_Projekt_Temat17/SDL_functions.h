@@ -31,6 +31,15 @@ funkcja pobieraj¹ca kolor piksela z okna
 SDL_Color getPixel(int x, int y);
 
 /*
+funkcja pobieraj¹ca kolor piksela z obiektu SDL_Surface
+@param surface	definiuje obiekt z którego odczytywane s¹ piksele
+@param x, y		definiuj¹ po³o¿enie piksela
+@return			SDL-owy typ danych w którym zaweira kolor piksela na podanym po³o¿eniu
+@EXCEPTIONS:	---
+*/
+SDL_Color getPixel_BMP(SDL_Surface *surface, int x, int y);
+
+/*
 funkcja ³aduj¹ca obraz w pliku BMP
 @param bmp		definuje SDL_Surface do kótrej ³adujemy plik
 @param nazwa	definiuje nazwê pliku który ma byæ otwarty
