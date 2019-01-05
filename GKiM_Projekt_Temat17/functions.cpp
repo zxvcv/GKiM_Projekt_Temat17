@@ -18,6 +18,23 @@ SDL_Color ImposedPalette[64] = {	{   0,   0,   0 }, {   0,   0,  85 }, {   0,   
 									{ 255, 171,   0 }, { 255, 171,  85 }, { 255, 171, 171 }, { 255, 171, 255 },
 									{ 255, 255,   0 }, { 255, 255,  85 }, { 255, 255, 171 }, { 255, 255, 255 } };
 
+SDL_Color ImposedPalette2[64] = {	{   0,   0,   0 }, {   0,   0,  65 }, {   0,   0, 128 }, {   0,   0, 192 },
+									{   0,  65,   0 }, {   0,  65,  65 }, {   0,  65, 128 }, {   0,  65, 192 },
+									{   0, 128,   0 }, {   0, 128,  65 }, {   0, 128, 128 }, {   0, 128, 192 },
+									{   0, 192,   0 }, {   0, 192,  65 }, {   0, 192, 128 }, {   0, 192, 192 },
+									{  65,   0,   0 }, {  65,   0,  65 }, {  65,   0, 128 }, {  65,   0, 192 },
+									{  65,  65,   0 }, {  65,  65,  65 }, {  65,  65, 128 }, {  65,  65, 192 },
+									{  65, 128,   0 }, {  65, 128,  65 }, {  65, 128, 128 }, {  65, 128, 192 },
+									{  65, 192,   0 }, {  65, 192,  65 }, {  65, 192, 128 }, {  65, 192, 192 },
+									{ 128,   0,   0 }, { 128,   0,  65 }, { 128,   0, 128 }, { 128,   0, 192 },
+									{ 128,  65,   0 }, { 128,  65,  65 }, { 128,  65, 128 }, { 128,  65, 192 },
+									{ 128, 128,   0 }, { 128, 128,  65 }, { 128, 128, 128 }, { 128, 128, 192 },
+									{ 128, 192,   0 }, { 128, 192,  65 }, { 128, 192, 128 }, { 128, 192, 192 },
+									{ 192,   0,   0 }, { 192,   0,  65 }, { 192,   0, 128 }, { 192,   0, 192 },
+									{ 192,  65,   0 }, { 192,  65,  65 }, { 192,  65, 128 }, { 192,  65, 192 },
+									{ 192, 128,   0 }, { 192, 128,  65 }, { 192, 128, 128 }, { 192, 128, 192 },
+									{ 192, 192,   0 }, { 192, 192,  65 }, { 192, 192, 128 }, { 192, 192, 192 } };
+
 
 void BMPtoPC_ImposedPallete()
 {
@@ -35,7 +52,7 @@ void BMPtoPC_ImposedPalleteDithering()
 	cout << "konwersja BMP -> PC paleta narzucona + dithering" << endl;
 
 	Uint8 **output = dithering(input_file, ImposedPalette);
-
+	Uint8 **output2 = dithering(input_file, ImposedPalette2);
 	//dane z tabeli output aby otrzymac kolor pobieramy nastêpuj¹co: (0 : 255)
 	//		paleta[output[i][j]].r	//dla r
 	//		paleta[output[i][j]].g	//dla g
@@ -51,6 +68,9 @@ void BMPtoPC_ImposedPalleteDithering()
 	//for (int i = 0; i < input_file->w; ++i)
 	//	for (int j = 0; j < input_file->h; ++j)
 	//		setPixel(i, j, ImposedPalette[output[i][j]].r, ImposedPalette[output[i][j]].g, ImposedPalette[output[i][j]].b);
+	//for (int i = 0; i < input_file->w; ++i)
+	//	for (int j = 0; j < input_file->h; ++j)
+	//		setPixel(i, j+ input_file->h, ImposedPalette2[output2[i][j]].r, ImposedPalette2[output2[i][j]].g, ImposedPalette2[output2[i][j]].b);
 	//bool done = false;
 	//while (!done)
 	//{
@@ -85,9 +105,12 @@ void BMPtoPC_ImposedPalleteDithering()
 
 
 
-	for (int i = 0; i < input_file->w; ++i)
-		delete[] output[i];
-	delete[] output;
+	//for (int i = 0; i < input_file->w; ++i)
+	//	delete[] output[i];
+	//delete[] output;
+	//for (int i = 0; i < input_file->w; ++i)
+	//	delete[] output2[i];
+	//delete[] output2;
 }
 
 void BMPtoPC_DedicatedPallete()

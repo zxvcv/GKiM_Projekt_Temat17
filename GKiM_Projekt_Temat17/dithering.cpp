@@ -2,10 +2,6 @@
 #include "dithering.h"
 
 
-Uint8 getR(Uint8 val) { return val & 0b00110000; }
-Uint8 getG(Uint8 val) { return val & 0b00001100; }
-Uint8 getB(Uint8 val) { return val & 0b00000011; }
-
 
 Uint8 **dithering(SDL_Surface *surface, SDL_Color *palette)
 {
@@ -71,8 +67,7 @@ Uint8 **dithering(SDL_Surface *surface, SDL_Color *palette)
 				}
 			}
 
-			output[i][j] = getR(palette[index].r) | getG(palette[index].g) | getB(palette[index].b);
-			
+			output[i][j] = index;
 
 			blad.r = kolor.r - palette[index].r;
 			blad.g = kolor.g - palette[index].g;

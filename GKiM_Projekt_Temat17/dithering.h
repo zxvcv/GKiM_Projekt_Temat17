@@ -12,13 +12,6 @@ struct kolor {
 };
 
 
-
-Uint8 getR(Uint8 val);
-
-Uint8 getG(Uint8 val);
-
-Uint8 getB(Uint8 val);
-
 /*
 funkcja wykonujaca operacjê ditheringu, zwracaj¹ca wskaznik do tablicy dwuwymiarowej (o wymiarach wigth i height)
 @param surface	wskaznik do obiektu w którym otwarty jest obraz na którym ma zostac wykonana operacja ditheringu
