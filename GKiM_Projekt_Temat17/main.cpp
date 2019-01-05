@@ -27,6 +27,7 @@ SDL_Surface *input_file = nullptr;
 string filename;
 bool inactive = true;
 
+
 extern SDL_Surface *buttons_texture;
 
 

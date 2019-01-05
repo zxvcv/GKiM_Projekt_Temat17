@@ -161,6 +161,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="dithering.h" />
     <ClInclude Include="functions.h" />
     <ClInclude Include="menu_functions.h" />
     <ClInclude Include="l_exceptions.h" />
@@ -169,6 +170,7 @@
     <ClInclude Include="view.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="dithering.cpp" />
     <ClCompile Include="functions.cpp" />
     <ClCompile Include="menu_functions.cpp" />
     <ClCompile Include="l_exceptions.cpp" />

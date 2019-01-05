@@ -5,10 +5,12 @@
 #include <SDL.h>
 #include "l_exceptions.h"
 #include "SDL_functions.h"
+#include "dithering.h"
 
 using namespace std;
 
 extern SDL_Surface *input_file;
+extern SDL_Event event;
 
 /*
 ...opis...
