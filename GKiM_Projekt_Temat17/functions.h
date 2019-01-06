@@ -2,15 +2,22 @@
 #define FUNCTIONS_H
 
 #include <iostream>
+#include <fstream>
 #include <SDL.h>
 #include "l_exceptions.h"
 #include "SDL_functions.h"
 #include "dithering.h"
+#include "palette.h"
+#include "lz77.h"
+#include "files.h"
+#include "data_preparation.h"
 
 using namespace std;
 
 extern SDL_Surface *input_file;
 extern SDL_Event event;
+extern SDL_Color ImposedPalette[];
+extern SDL_Color ImposedPalette2[];
 
 /*
 ...opis...

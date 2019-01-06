@@ -161,20 +161,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="data_preparation.h" />
     <ClInclude Include="dithering.h" />
+    <ClInclude Include="files.h" />
     <ClInclude Include="functions.h" />
+    <ClInclude Include="lz77.h" />
     <ClInclude Include="menu_functions.h" />
     <ClInclude Include="l_exceptions.h" />
+    <ClInclude Include="palette.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SDL_functions.h" />
     <ClInclude Include="view.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="data_preparation.cpp" />
     <ClCompile Include="dithering.cpp" />
+    <ClCompile Include="files.cpp" />
     <ClCompile Include="functions.cpp" />
+    <ClCompile Include="lz77.cpp" />
     <ClCompile Include="menu_functions.cpp" />
     <ClCompile Include="l_exceptions.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="palette.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

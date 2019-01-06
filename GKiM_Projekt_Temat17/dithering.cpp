@@ -3,23 +3,16 @@
 
 
 
-Uint8 **dithering(SDL_Surface *surface, SDL_Color *palette)
+void dithering(SDL_Surface *surface, std::vector<SDL_Color> &palette, vector<Uint8> &output)
 {
 	int width = input_file->w;
 	int height = input_file->h;
-
-	//tablica danych wyjsciowych
-	Uint8 **output = new Uint8 *[width];
-	for (int i = 0; i < width; ++i)
-		output[i] = new Uint8[height];
 
 	//tworzenie i inicjalizowanie zerami tablicy bledow
 	kolor blad;
 	kolor ** bledy = new kolor *[width + 2];
 	for (int i = 0; i < width + 2; ++i) 
-	{
 		bledy[i] = new kolor[height + 2];
-	}
 
 	for (int i = 0; i < width + 2; ++i) 
 	{
@@ -67,7 +60,7 @@ Uint8 **dithering(SDL_Surface *surface, SDL_Color *palette)
 				}
 			}
 
-			output[i][j] = index;
+			output.push_back(index);
 
 			blad.r = kolor.r - palette[index].r;
 			blad.g = kolor.g - palette[index].g;
@@ -93,6 +86,4 @@ Uint8 **dithering(SDL_Surface *surface, SDL_Color *palette)
 	for (int i = 0; i < width + 2; ++i)
 		delete[] bledy[i];
 	delete[] bledy;
-
-	return output;
 }
