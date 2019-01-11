@@ -8,6 +8,9 @@ void dithering(SDL_Surface *surface, std::vector<SDL_Color> &palette, vector<Uin
 	int width = input_file->w;
 	int height = input_file->h;
 
+	output.clear();
+	output.reserve(width*height);
+
 	//tworzenie i inicjalizowanie zerami tablicy bledow
 	kolor blad;
 	kolor ** bledy = new kolor *[width + 2];

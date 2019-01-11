@@ -6,6 +6,7 @@ using namespace std;
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <queue>
 #include <SDL.h>
 #include "SDL_functions.h"
 #include "palette.h"
@@ -14,7 +15,7 @@ using namespace std;
 extern SDL_Color ImposedPalette[];
 extern SDL_Color ImposedPalette2[];
 
-void lz77_conversion(SDL_Surface *surface, vector<Uint8> &data, vector<kod> &zakodowane);
+void lz77_conversion(SDL_Surface *surface, vector<Uint8> &data, queue<kod> &zakodowane);
 
 #endif // !LZ77_H
 

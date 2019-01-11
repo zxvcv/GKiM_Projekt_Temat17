@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include <queue>
 #include <SDL.h>
 #include "l_exceptions.h"
 #include "SDL_functions.h"

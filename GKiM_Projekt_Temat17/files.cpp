@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "files.h"
 
-void save_to_PC(SDL_Surface *surface, string outFileName, vector<kod> &zakodowane)
+void save_to_PC(SDL_Surface *surface, string outFileName, queue<kod> &zakodowane)
 {
 	unsigned short width = surface->w;
 	unsigned short height = surface->h;
@@ -24,10 +24,12 @@ void save_to_PC(SDL_Surface *surface, string outFileName, vector<kod> &zakodowan
 	zapis.write((char*)&(dlugoscPoZakodowaniu), sizeof(dlugoscPoZakodowaniu));
 	zapis.write((char*)&(wielkoscPlikuWBajtach), sizeof(wielkoscPlikuWBajtach));
 	zapis.write((char*)&(znakPalety), sizeof(znakPalety));
-	for (int i = 0; i < zakodowane.size(); ++i) {
-		zapis.write((char*)&(zakodowane[i].ile), sizeof(zakodowane[i].ile));
-		zapis.write((char*)&(zakodowane[i].gdzie), sizeof(zakodowane[i].gdzie));
-		zapis.write((char*)&(zakodowane[i].wartosc), sizeof(zakodowane[i].wartosc));
+	while (!zakodowane.empty())
+	{
+		zapis.write((char*)&(zakodowane.front().ile), sizeof(zakodowane.front().ile));
+		zapis.write((char*)&(zakodowane.front().gdzie), sizeof(zakodowane.front().gdzie));
+		zapis.write((char*)&(zakodowane.front().wartosc), sizeof(zakodowane.front().wartosc));
+		zakodowane.pop();
 	}
 
 	zapis.close();

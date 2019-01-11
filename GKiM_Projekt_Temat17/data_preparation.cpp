@@ -7,6 +7,9 @@ void nearest_neighbor(SDL_Surface *surface, std::vector<SDL_Color> &palette, vec
 	unsigned short width = surface->w;
 	unsigned short height = surface->h;
 
+	output.clear();
+	output.reserve(width*height);
+
 	//informacje o najblizszym kolorze
 	//dla ka¿dego piksela znajdujemy najbli¿szy kolor z palety i dodajemy go do tablicy output
 	int najmniejszy;

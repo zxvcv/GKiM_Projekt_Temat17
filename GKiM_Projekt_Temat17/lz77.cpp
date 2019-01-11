@@ -1,110 +1,143 @@
 #include "pch.h"
 #include "lz77.h"
+#include <list>
 
-void lz77_conversion(SDL_Surface *surface, vector<Uint8> &output, vector<kod> &zakodowane)
+/* destruktor w razie w nazwa_vektora.~vector<int>(); */
+
+void lz77_conversion(SDL_Surface *surface, vector<Uint8> &output, queue<kod> &zakodowane)
 {
-	cout << "przed konwersja" << endl; //DEBUG
 	unsigned short width = surface->w;
 	unsigned short height = surface->h;
+	int dlugoscSlownika = 16384;
+	int dlugoscWejscia = 512;
 
-
-	vector<Uint8> slownik;
-	vector<Uint8> wejscie;
-	//vector<kod> zakodowane;
 	kod znak;
 	int i, j, k;
-	int dlugoscSlownika = 32768;
-	int dlugoscWejscia = 256;
 
-	//wypelniam bufor wejsciowy pierwszymi znakami
-	for (i = 0; i < 256 && i < output.size(); ++i)
-		wejscie.push_back(output[i]);
+	Uint8 temp = output[0];
 
-	//wypelniam slownik pierwszym znakiem
-	for (i = 0; i < dlugoscSlownika; ++i)
-		slownik.push_back(wejscie[0]);
-	
-	znak.ile = 0;
-	znak.gdzie = 0;
-	znak.wartosc = wejscie[0];
-	zakodowane.push_back(znak);
+	output.insert(output.begin(), dlugoscSlownika, temp);
+
+	int pSlownika = 0;
+	int kSlownika = dlugoscSlownika - 1;
+
+	int pWejscia = dlugoscSlownika;
+	int kWejscia = dlugoscSlownika + dlugoscWejscia - 1;
+
+	int indexWejscia = pWejscia;
 
 	int tile;
 	int tgdzie;
 	int ile = 0;
 	int gdzie;
 	int wartosc;
-	int indexWejscia;
 	bool flaga;
-	for (int w = ile; w >= 0 && !wejscie.empty(); --w) 
-	{
-		//przekladam pierwszy element bufora wejscia do slownika
-		slownik.push_back(wejscie[0]);
 
-		//usuwam pierwszy element wejscia ktory przelozylem do slownik
-		wejscie.erase(wejscie.begin());
+	int rOutput = output.size();
 
-		//dodaje do wejscia kolejny element
-		if (i < output.size())
-			wejscie.push_back(output[i]);
+	if (kWejscia >= output.size()) {
+		kWejscia = output.size() - 1;
 	}
-	cout << "wejscie: " << wejscie.size() << endl;
-	cout << "output: " << output.size() << endl;
-	//przechodze po dalszych wartosciach
-	for (i = 256; !wejscie.empty() /*i < output.size() - dlugoscWejscia*/; ++i) 
-	{
+
+	znak.ile = 0;
+	znak.gdzie = 0;
+	znak.wartosc = /*indexWejscia < output.size() ?*/ output[indexWejscia]/* : 14*/;
+	zakodowane.push(znak);
+	pSlownika += 1;
+	kSlownika += 1;
+	pWejscia += 1;
+	kWejscia += 1;
+
+	if (kWejscia >= output.size()) {
+		kWejscia = output.size() - 1;
+	}
+	if (kSlownika >= output.size()) {
+		kSlownika = output.size() - 1;
+	}
+
+	list<int> znaki[64];
+	list<int> ostatnie;
+
+	for (i = pSlownika; i <= kSlownika; ++i) {
+		znaki[output[i]].push_back(i);
+	}
+
+	for (i = 0; i < dlugoscWejscia; ++i) {
+		ostatnie.push_back(output[i]);
+	}
+
+	Uint8 test;
+
+	for (i = indexWejscia; i < rOutput; ++i) {
 		ile = 0;
 		gdzie = 0;
 		tile = 0;
 		tgdzie = 0;
 
-		//przechodze po wartoscia slownika
-		for (j = 0; j < slownik.size() && !wejscie.empty(); ++j) 
-		{
-			indexWejscia = 0;
-			if (slownik[j] == wejscie[indexWejscia]) 
-			{
+		test = output[pWejscia];
+
+		for (list<int>::iterator it = znaki[test].begin(); it != znaki[test].end(); ++it) {
+			if (output[*it] == output[pWejscia]) {
 				tile = 0;
-				tgdzie = slownik.size() - j;
+				tgdzie = pWejscia - *it;
 
 				flaga = true;
-				for (k = j; (k < slownik.size()) && (flaga == true) && indexWejscia < wejscie.size(); ++k) 
-				{
-					if (slownik[k] == wejscie[indexWejscia]) 
-					{
+
+				//przeszukuje dalsza czesc slownika
+				for (k = *it; k < kWejscia && flaga == true && pWejscia + tile <= kWejscia; ++k) {
+
+					if (output[k] == output[pWejscia + tile]) {
 						++tile;
-						++indexWejscia;
 					}
-					else 
-					{
+					else {
 						flaga = false;
 					}
 				}
 
-				if (tile > ile) 
-				{
+				if (tile > ile) {
 					ile = tile;
 					gdzie = tgdzie;
 				}
 			}
 		}
 
-		znak.ile = ile;
-		znak.gdzie = gdzie;
-		znak.wartosc = ile < wejscie.size() ? wejscie[ile] : 14;
-		zakodowane.push_back(znak);
-		for (int w = ile; w >= 0 && !wejscie.empty(); --w) {
-			//przekladam pierwszy element bufora wejscia do slownika
-			slownik.push_back(wejscie[0]);
 
-			//usuwam pierwszy element wejscia ktory przelozylem do slownik
-			wejscie.erase(wejscie.begin());
+		int end = kSlownika + ile + 1;
 
-			//dodaje do wejscia kolejny element
-			if (i < output.size()) {
-				wejscie.push_back(output[i]);
+		if (end >= output.size()) {
+			end = output.size() - 1;
+		}
+
+		if (kSlownika + 1 < output.size()) {
+			for (k = kSlownika + 1; k <= end; ++k) {
+				znaki[output[k]].push_back(k);
+				ostatnie.push_back(output[k]);
 			}
 		}
+
+		if (kSlownika + 1 < output.size()) {
+			for (k = kSlownika + 1; k <= end; ++k) {
+				znaki[ostatnie.front()].pop_front();
+				ostatnie.pop_front();
+			}
+		}
+
+		znak.ile = ile;
+		znak.gdzie = gdzie;
+		indexWejscia = indexWejscia + ile + 1;
+		znak.wartosc = indexWejscia < output.size() ? output[indexWejscia] : 14;
+		zakodowane.push(znak);
+
+		pSlownika += ile + 1;
+		kSlownika += ile + 1;
+		pWejscia += ile + 1;
+		kWejscia += ile + 1;
+		if (kWejscia >= output.size()) {
+			kWejscia = output.size() - 1;
+		}
+		if (kSlownika >= output.size()) {
+			kSlownika = output.size() - 1;
+		}
+		i += ile;
 	}
-	cout << "po konwersji" << endl; //DEBUG
 }
