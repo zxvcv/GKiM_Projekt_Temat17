@@ -13,8 +13,11 @@
 #include "lz77.h"
 #include "files.h"
 #include "data_preparation.h"
+#include <chrono> //debug
 
 using namespace std;
+using tp = std::chrono::time_point<std::chrono::system_clock>; //debug
+using duration = std::chrono::duration<float>; //debug
 
 extern SDL_Surface *input_file;
 extern SDL_Event event;

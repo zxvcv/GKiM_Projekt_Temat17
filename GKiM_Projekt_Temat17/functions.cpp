@@ -12,15 +12,26 @@ void BMPtoPC_ImposedPallete()
 	imposed_palette palette(IMPOSED_PALETTE_1);
 
 
+	tp time1;
+	duration time2;
+	
 		cout << "nearest_neighbor <start>" << endl;
+	time1 = std::chrono::system_clock::now();
 	nearest_neighbor(input_file, palette.returnPalette(), data);
-		cout << "nearest_neighbor <end>" << endl;
+	time2 = std::chrono::system_clock::now() - time1;
+		cout << "nearest_neighbor <end>, czas: "<< time2.count() << endl;
+
 		cout << "lz77_conversion <start>" << endl;
-	lz77_conversion(input_file, data, zakodowane);
-		cout << "lz77_conversion <end>" << endl;
+	time1 = std::chrono::system_clock::now();
+	lz77_conversion2(input_file, data, zakodowane);
+	time2 = std::chrono::system_clock::now() - time1;
+		cout << "lz77_conversion <end>, czas: " << time2.count() << endl;
+		
 		cout << "save_to_PC <start>" << endl;
+	time1 = std::chrono::system_clock::now();
 	save_to_PC(input_file, "plik.pc", zakodowane);
-		cout << "save_to_PC <end>" << endl;
+	time2 = std::chrono::system_clock::now() - time1;
+		cout << "save_to_PC <end>, czas: " << time2.count() << endl;
 }
 
 void BMPtoPC_ImposedPalleteDithering()

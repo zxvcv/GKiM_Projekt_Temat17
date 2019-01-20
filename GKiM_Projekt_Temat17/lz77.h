@@ -17,5 +17,7 @@ extern SDL_Color ImposedPalette2[];
 
 void lz77_conversion(SDL_Surface *surface, vector<Uint8> &data, queue<kod> &zakodowane);
 
+void lz77_conversion2(SDL_Surface *surface, vector<Uint8> &output, queue<kod> &zakodowane);
+
 #endif // !LZ77_H
 
