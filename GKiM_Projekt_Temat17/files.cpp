@@ -3,34 +3,112 @@
 
 void save_to_PC(SDL_Surface *surface, string outFileName, queue<kod> &zakodowane)
 {
-	unsigned short width = surface->w;
-	unsigned short height = surface->h;
+	file_PC_header header;
+	header.p = 'P';
+	header.c = 'C';
+	header.width = surface->w;
+	header.height = surface->h;
+	header.offset = 13;
+	header.dataLength = zakodowane.size();
+	header.file_size = 15 + zakodowane.size() * 9;
+	header.paletteNUM = 1;
+	header.unused = 0;
 
 	std::ofstream zapis;
-	zapis.open(outFileName, ios::binary);
+	try {
+		zapis.open(outFileName, ios::binary);
+	}
+	catch (std::exception &e) {
+		clean_up();
+		exit(EXIT_FAILURE);
+	}
 
-	char p = 'P';
-	char c = 'C';
-	char znakPalety = '1';
-	unsigned int dlugoscPoZakodowaniu = zakodowane.size();
-	unsigned short offset = 13;
-	unsigned short wielkoscPlikuWBajtach = 15 + zakodowane.size() * 9;
-
-	zapis.write((char*)&(p), sizeof(p));
-	zapis.write((char*)&(c), sizeof(c));
-	zapis.write((char*)&(width), sizeof(width));
-	zapis.write((char*)&(height), sizeof(height));
-	zapis.write((char*)&(offset), sizeof(offset));
-	zapis.write((char*)&(dlugoscPoZakodowaniu), sizeof(dlugoscPoZakodowaniu));
-	zapis.write((char*)&(wielkoscPlikuWBajtach), sizeof(wielkoscPlikuWBajtach));
-	zapis.write((char*)&(znakPalety), sizeof(znakPalety));
+	//zapis nag³ówka
+	zapis.write((char*)&(header), sizeof(header));
+	
+	//zapis danych
+	kod val;
 	while (!zakodowane.empty())
 	{
-		zapis.write((char*)&(zakodowane.front().ile), sizeof(zakodowane.front().ile));
-		zapis.write((char*)&(zakodowane.front().gdzie), sizeof(zakodowane.front().gdzie));
-		zapis.write((char*)&(zakodowane.front().wartosc), sizeof(zakodowane.front().wartosc));
+		val = zakodowane.front();
 		zakodowane.pop();
+		zapis.write((char*)&val, sizeof(val));
 	}
 
 	zapis.close();
+}
+
+void get_from_PC(ifstream &ifile, file_PC_header &header, vector<kod> &zakodowane)
+{
+	char *buff = nullptr;
+	int buff_size;
+	
+	int ptr = 0;
+	
+	buff_size = sizeof(header);
+	buff = new char[buff_size];
+	
+	ifile.seekg(0, ifile.beg);
+	ifile.read(buff, buff_size); //mozna zrobic bajt przerwy (wtedy usunac -1)
+	ptr += buff_size;
+
+
+	header = *((file_PC_header*)(buff));
+	delete[] buff;
+
+	if (header.p != 'P' || header.c != 'C')
+	{
+		clean_up();
+		cout << "err: it's, not a PC file" << endl;
+		exit(EXIT_FAILURE);
+	}
+
+
+	zakodowane.clear();
+	zakodowane.resize(header.dataLength);
+
+	buff_size = 5;
+	buff = new char[buff_size];
+	//czytanie danych
+	kod val;
+
+	for(int i=0; i<header.dataLength; ++i)
+	{
+		ifile.seekg(ptr, ifile.beg);
+		ifile.read((char*)&val, sizeof(val));
+		zakodowane[i] = val;
+		ptr += sizeof(val);
+	}
+
+	delete[] buff;
+}
+
+void save_to_BMP(file_PC_header &header, vector<Uint8> &data, std::vector<SDL_Color> &palette)
+{
+	SDL_Surface *surface;
+
+	surface = SDL_CreateRGBSurface(0, header.width, header.height, 32, 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
+
+	if (surface == NULL)
+	{
+		cout << "err creating surface" << endl;
+		clean_up();
+		exit(EXIT_FAILURE);
+	}
+	
+	int data_num = 0;
+
+	SDL_LockSurface(surface);
+	
+	for (int x = 0; x < surface->w; ++x)
+	{
+		for (int y = 0; y < surface->h; ++y)
+		{
+			setPixel(surface, x, y, palette[data[data_num]].r, palette[data[data_num]].g, palette[data[data_num]].b);
+			++data_num;
+		}
+	}
+	SDL_UnlockSurface(surface);
+
+	zapiszBMP(&surface, "mojBMP.bmp");
 }

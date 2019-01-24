@@ -1,5 +1,6 @@
 ﻿#include "pch.h"
 #include <iostream>
+#include <fstream>
 #include <cstdlib>
 #include <SDL_ttf.h>
 #include <SDL.h>
@@ -24,9 +25,10 @@ SDL_Surface *screen = nullptr;
 SDL_Event event;
 
 SDL_Surface *input_file = nullptr;
+ifstream input_file_pc;
 string filename;
 bool inactive = true;
-
+bool bmp = false;
 
 extern SDL_Surface *buttons_texture;
 

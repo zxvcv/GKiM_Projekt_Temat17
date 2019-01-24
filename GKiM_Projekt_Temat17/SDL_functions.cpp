@@ -2,18 +2,18 @@
 #include "SDL_functions.h"
 
 
-void setPixel(int x, int y, Uint8 R, Uint8 G, Uint8 B)
+void setPixel(SDL_Surface *surface, int x, int y, Uint8 R, Uint8 G, Uint8 B)
 {
 	if ((x >= 0) && (x<width) && (y >= 0) && (y<height))
 	{
 		/* Zamieniamy poszczególne sk³adowe koloru na format koloru pixela */
-		Uint32 pixel = SDL_MapRGB(screen->format, R, G, B);
+		Uint32 pixel = SDL_MapRGB(surface->format, R, G, B);
 
 		/* Pobieramy informacji ile bajtów zajmuje jeden pixel */
-		int bpp = screen->format->BytesPerPixel;
+		int bpp = surface->format->BytesPerPixel;
 
 		/* Obliczamy adres pixela */
-		Uint8 *p = (Uint8 *)screen->pixels + y * screen->pitch + x * bpp;
+		Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
 
 		/* Ustawiamy wartoœæ pixela, w zale¿noœci od formatu powierzchni*/
 		switch (bpp)
@@ -195,6 +195,17 @@ void ladujBMP(SDL_Surface** bmp, char const* nazwa, int x, int y)
 		throw MyRuntimeExceptions::LoadImageException(SDL_GetError());
 }
 
+void zapiszBMP(SDL_Surface** surface, char const* nazwa)
+{
+	if (!surface)
+	{
+		SDL_FreeSurface(*surface);
+		*surface = nullptr;
+	}
+	
+	SDL_SaveBMP(*surface, nazwa);
+}
+
 void wyswietlBMP(SDL_Surface* bmp, int x, int y)
 {
 	if (!bmp)
@@ -221,6 +232,8 @@ void clean_up()
 		SDL_FreeSurface(screen);
 	if (input_file != nullptr)
 		SDL_FreeSurface(input_file);
+	if (input_file_pc.is_open())
+		input_file_pc.close();
 
 	//Quit SDL_ttf
 	TTF_Quit();

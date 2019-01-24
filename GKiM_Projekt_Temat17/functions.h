@@ -13,66 +13,55 @@
 #include "lz77.h"
 #include "files.h"
 #include "data_preparation.h"
+#include <chrono> //debug
 
 using namespace std;
 
+using tp = std::chrono::time_point<std::chrono::system_clock>;
+using duration = std::chrono::duration<float>;
+
 extern SDL_Surface *input_file;
-extern SDL_Event event;
-extern SDL_Color ImposedPalette[];
-extern SDL_Color ImposedPalette2[];
+extern ifstream input_file_pc;
+
 
 /*
-...opis...
-@param _		...
-@return			...
+funkcja wykonujaca konwersjê BMP do PC przy pomocy palety narzuconej
 @EXCEPTIONS:	---
 */
 void BMPtoPC_ImposedPallete();
 
 /*
-...opis...
-@param _		...
-@return			...
+funkcja wykonujaca konwersjê BMP do PC przy pomocy palety narzuconej i ditheringu
 @EXCEPTIONS:	---
 */
 void BMPtoPC_ImposedPalleteDithering();
 
 /*
-...opis...
-@param _		...
-@return			...
+funkcja wykonujaca konwersjê BMP do PC przy pomocy palety dedykowanej
 @EXCEPTIONS:	---
 */
 void BMPtoPC_DedicatedPallete();
 
 /*
-...opis...
-@param _		...
-@return			...
+funkcja wykonujaca konwersjê BMP do PC przy pomocy palety dedykowanej i ditheringu
 @EXCEPTIONS:	---
 */
 void BMPtoPC_DedicatedPalleteDithering();
 
 /*
-...opis...
-@param _		...
-@return			...
+funkcja wykonujaca konwersjê BMP do PC przy pomocy palety skali szaroœci
 @EXCEPTIONS:	---
 */
 void BMPtoPC_ShadersOfGrey();
 
 /*
-...opis...
-@param _		...
-@return			...
+funkcja wykonujaca konwersjê BMP do PC przy pomocy palety skali szaroœci i ditheringu
 @EXCEPTIONS:	---
 */
 void BMPtoPC_ShadersOfGreyDithering();
 
 /*
-...opis...
-@param _		...
-@return			...
+funkcja wykonujaca konwersjê PC do BMP
 @EXCEPTIONS:	---
 */
 void PCtoBMP();

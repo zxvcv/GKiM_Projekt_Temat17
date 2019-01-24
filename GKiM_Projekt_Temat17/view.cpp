@@ -280,10 +280,11 @@ void MENU_event()
 		ret_val = A_Menu.buttons[i].handle_events(event);
 		if (inactive == true && i != 0 && i != 4 && i != 5)
 			A_Menu.buttons[i].change_button(A_Menu.buttons[i].get_rectangle(), &texture_type[INACTIVE]);
-		if (ret_val.released == true && inactive == false ||
-			ret_val.released == true && i == 5 ||
-			ret_val.released == true && i == 4 ||
-			ret_val.released == true && i == 0)
+		if (inactive == false && bmp == true && i != 0 && i != 1 && i != 2 && i != 4 && i != 5)
+			A_Menu.buttons[i].change_button(A_Menu.buttons[i].get_rectangle(), &texture_type[INACTIVE]);
+		if (inactive == false && bmp == false && i != 0 && i != 3 && i != 4 && i != 5)
+			A_Menu.buttons[i].change_button(A_Menu.buttons[i].get_rectangle(), &texture_type[INACTIVE]);
+		if (ret_val.released == true && ( inactive == false || i == 5 || i == 4 || i == 0))
 		{
 			switch (i)
 			{
@@ -291,13 +292,16 @@ void MENU_event()
 				funkcja1();
 				break;
 			case 1:
-				funkcja2();
+				if(inactive == false && bmp == true)
+					funkcja2();
 				break;
 			case 2:
-				funkcja3();
+				if (inactive == false && bmp == true)
+					funkcja3();
 				break;
 			case 3:
-				funkcja4();
+				if (inactive == false && bmp == false)
+					funkcja4();
 				break;
 			case 4:
 				funkcja5();

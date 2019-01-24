@@ -2,6 +2,7 @@
 #define MENU_FUNCTIONS_H
 
 #include <iostream>
+#include <fstream>
 #include <SDL_ttf.h>
 #include <SDL.h>
 #include "l_exceptions.h"
@@ -14,6 +15,9 @@ extern SDL_Event event;
 extern std::vector<SDL_Rect> texture_type;
 extern std::string filename;
 extern SDL_Surface *input_file;
+extern bool inactive;
+extern bool bmp;
+extern std::ifstream input_file_pc;
 
 /*
 funkcja przycisku 1 menu, pobierajaca i zapisuj¹ca nazwê pliku wejœciowego

@@ -27,6 +27,7 @@ struct Ret
 extern SDL_Surface *screen;
 extern SDL_Event event;
 extern bool inactive;
+extern bool bmp;
 
 class Button
 {

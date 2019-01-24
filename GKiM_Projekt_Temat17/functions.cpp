@@ -4,103 +4,149 @@
 
 void BMPtoPC_ImposedPallete()
 {
-	cout << "konwersja BMP -> PC paleta narzucona" << endl;
+	cout << "[INFO] konwersja BMP -> PC paleta narzucona" << endl;
 	
 	vector<Uint8> data;
 	queue<kod> zakodowane;
 
 	imposed_palette palette(IMPOSED_PALETTE_1);
 
+	tp time1;
+	duration time2;
 
-		cout << "nearest_neighbor <start>" << endl;
+	
+	//nearest_neighbor
+	cout << "[INFO] nearest_neighbor <start>" << endl;
+	time1 = std::chrono::system_clock::now();
+
 	nearest_neighbor(input_file, palette.returnPalette(), data);
-		cout << "nearest_neighbor <end>" << endl;
-		cout << "lz77_conversion <start>" << endl;
-	lz77_conversion(input_file, data, zakodowane);
-		cout << "lz77_conversion <end>" << endl;
-		cout << "save_to_PC <start>" << endl;
+		
+	time2 = std::chrono::system_clock::now() - time1;
+	cout << "[INFO] nearest_neighbor <end>, czas: "<< time2.count() << endl;
+
+	//lz77_compression
+	cout << "[INFO] lz77_compression <start>" << endl;
+	time1 = std::chrono::system_clock::now();
+
+	lz77_compression(data, zakodowane);
+
+	time2 = std::chrono::system_clock::now() - time1;
+	cout << "[INFO] lz77_compression <end>, czas: " << time2.count() << endl;
+		
+	//save_to_PC
+	cout << "[INFO] save_to_PC <start>" << endl;
+	time1 = std::chrono::system_clock::now();
+	
 	save_to_PC(input_file, "plik.pc", zakodowane);
-		cout << "save_to_PC <end>" << endl;
+	
+	time2 = std::chrono::system_clock::now() - time1;
+	cout << "[INFO] save_to_PC <end>, czas: " << time2.count() << endl;
 }
 
 void BMPtoPC_ImposedPalleteDithering()
 {
-	cout << "konwersja BMP -> PC paleta narzucona + dithering" << endl;
+	cout << "[INFO] konwersja BMP -> PC paleta narzucona + dithering" << endl;
 
 	vector<Uint8> data;
 	queue<kod> zakodowane;
-
+	
 	imposed_palette palette(IMPOSED_PALETTE_1);
 
-	
+	tp time1;
+	duration time2;
+
+	//nearest_neighbor
+	cout << "[INFO] dithering <start>" << endl;
+	time1 = std::chrono::system_clock::now();
+
 	dithering(input_file, palette.returnPalette(), data);
-	lz77_conversion(input_file, data, zakodowane);
+
+	time2 = std::chrono::system_clock::now() - time1;
+	cout << "[INFO] dithering <end>, czas: " << time2.count() << endl;
+
+	//lz77_compression
+	cout << "[INFO] lz77_compression <start>" << endl;
+	time1 = std::chrono::system_clock::now();
+
+	lz77_compression(data, zakodowane);
+
+	time2 = std::chrono::system_clock::now() - time1;
+	cout << "[INFO] lz77_compression <end>, czas: " << time2.count() << endl;
+	
+	//save_to_PC
+	cout << "[INFO] save_to_PC <start>" << endl;
+	time1 = std::chrono::system_clock::now();
+
 	save_to_PC(input_file, "plik.pc", zakodowane);
 
+	time2 = std::chrono::system_clock::now() - time1;
+	cout << "[INFO] save_to_PC <end>, czas: " << time2.count() << endl;
 }
 
 void BMPtoPC_DedicatedPallete()
 {
-	cout << "konwersja BMP -> PC paleta dedykowana" << endl;
-
-	vector<Uint8> data;
-	queue<kod> zakodowane;
-	
-	dedicated_palette palette;
-	palette.search_palette(input_file);
+	cout << "[INFO] konwersja BMP -> PC paleta dedykowana" << endl;
 
 	
-	nearest_neighbor(input_file, palette.returnPalette(), data);
-	lz77_conversion(input_file, data, zakodowane);
-	save_to_PC(input_file, "plik.pc", zakodowane);
 }
 
 void BMPtoPC_DedicatedPalleteDithering()
 {
-	cout << "konwersja BMP -> PC paleta dedykowana + dithering" << endl;
-
-	vector<Uint8> data;
-	queue<kod> zakodowane;
-
-	dedicated_palette palette;
-	palette.search_palette(input_file);
+	cout << "[INFO] konwersja BMP -> PC paleta dedykowana + dithering" << endl;
 
 	
-	dithering(input_file, palette.returnPalette(), data);
-	lz77_conversion(input_file, data, zakodowane);
-	save_to_PC(input_file, "plik.pc", zakodowane);
 }
 
 void BMPtoPC_ShadersOfGrey()
 {
-	cout << "konwersja BMP -> PC odcienie szaroœci" << endl;
+	cout << "[INFO] konwersja BMP -> PC odcienie szaroœci" << endl;
 
-	vector<Uint8> data;
-	queue<kod> zakodowane;
-
-	imposed_palette palette(SHADERS_OF_GREY_PALETTE);
-
-	nearest_neighbor(input_file, palette.returnPalette(), data);
-	lz77_conversion(input_file, data, zakodowane);
-	save_to_PC(input_file, "plik.pc", zakodowane);
+	
 }
 
 void BMPtoPC_ShadersOfGreyDithering()
 {
-	cout << "konwersja BMP -> PC odcienie szaroœci + dithering" << endl;
+	cout << "[INFO] konwersja BMP -> PC odcienie szaroœci + dithering" << endl;
 	
-	vector<Uint8> data;
-	queue<kod> zakodowane;
-
-	imposed_palette palette(SHADERS_OF_GREY_PALETTE);
-
 	
-	dithering(input_file, palette.returnPalette(), data);
-	lz77_conversion(input_file, data, zakodowane);
-	save_to_PC(input_file, "plik.pc", zakodowane);
 }
 
 void PCtoBMP()
 {
-	cout << "konwersja PC -> BMP" << endl;
+	cout << "[INFO] konwersja PC -> BMP" << endl;
+	
+	vector<kod> zakodowane;
+	vector<Uint8> data;
+	file_PC_header header;
+	imposed_palette palette(IMPOSED_PALETTE_1);
+
+	tp time1;
+	duration time2;
+
+	//get_from_PC
+	cout << "[INFO] get_from_PC <start>" << endl;
+	time1 = std::chrono::system_clock::now();
+	
+	get_from_PC(input_file_pc, header, zakodowane);
+	
+	time2 = std::chrono::system_clock::now() - time1;
+	cout << "[INFO] get_from_PC <end>, czas: " << time2.count() << endl;
+		
+	//lz77_decompression
+	cout << "[INFO] lz77_decompression <start>" << endl;
+	time1 = std::chrono::system_clock::now();
+	
+	lz77_decompression(zakodowane, header, data);
+	
+	time2 = std::chrono::system_clock::now() - time1;
+	cout << "[INFO] lz77_decompression <end>, czas: " << time2.count() << endl;
+
+	//save_to_BMP
+	cout << "[INFO] save_to_BMP <start>" << endl;
+	time1 = std::chrono::system_clock::now();
+
+	save_to_BMP(header, data, palette.returnPalette());
+
+	time2 = std::chrono::system_clock::now() - time1;
+	cout << "[INFO] save_to_BMP <end>, czas: " << time2.count() << endl;
 }

@@ -2,9 +2,11 @@
 #define SDL_FUNCTIONS_H
 
 #include <iostream>
+#include <fstream>
 #include <SDL_ttf.h>
 #include <SDL.h>
 #include "l_exceptions.h"
+
 
 extern SDL_Surface *screen;
 extern SDL_Surface *buttons_texture;
@@ -12,15 +14,16 @@ extern SDL_Surface *input_file;
 extern const int width;
 extern const int height;
 extern char const* tytul;
-
+extern std::ifstream input_file_pc;
 
 /*
 funkcja ustawiaj¹ca piksel w oknie
+@param surface	definuje powierzchnie SDL na ktorej bedziemy rysowac piksele
 @param x, y		definiuj¹ po³o¿enie piksela
 @param R, G, B	definuj¹ kolor ustawianego piksela
 @EXCEPTIONS:	---
 */
-void setPixel(int x, int y, Uint8 R, Uint8 G, Uint8 B);
+void setPixel(SDL_Surface *surface, int x, int y, Uint8 R, Uint8 G, Uint8 B);
 
 /*
 funkcja pobieraj¹ca kolor piksela z okna
@@ -49,6 +52,14 @@ funkcja ³aduj¹ca obraz w pliku BMP
 void ladujBMP(SDL_Surface** bmp, char const* nazwa, int x, int y);
 
 /*
+funkcja zapisujaca obraz do pliku BMP
+@param surface	powierzchnia SDL z której rysujemy obraz
+@param nazwa	definiuje nazwê pliku do którego dane maj¹ byc zapisane
+@EXCEPTIONS:	---
+*/
+void zapiszBMP(SDL_Surface** surface, char const* nazwa);
+
+/*
 funkcja wyswietlajaca w oknie za³adowany wczeœniej obraz w formacie BMP
 @param bmp		definuje SDL_Surface z której wyswietlamy obraz
 @param x,y		definuj¹ polozenie obrazu na ekranie
@@ -64,7 +75,7 @@ funkcja czyszcz¹ca onko (wypelniaj¹ca okno jednolitym wybranym kolorem)
 void czyscEkran(Uint8 R, Uint8 G, Uint8 B);
 
 /*
-funkcja usuwaj¹ca wszytkie rzeczy aby poprawnie zakoñczyæ dzia³anie programu
+funkcja usuwaj¹ca wszytkie otrzowone elementy (jesli potrzebne) aby poprawnie zampnac program
 @EXCEPTIONS:	---
 */
 void clean_up();

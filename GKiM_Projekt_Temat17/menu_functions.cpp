@@ -6,7 +6,7 @@ void funkcja1()
 	std::string name_save = filename;
 	//inicjalizacja
 	SDL_Color color_b, color_r, color_g;
-
+	std::ifstream file;
 
 	char ch;
 	color_b.r = 0; color_b.g = 0; color_b.b = 0; //czarny
@@ -45,7 +45,7 @@ void funkcja1()
 				if (event.key.keysym.sym >= 97 && event.key.keysym.sym <= 122) //a-z
 				{
 					if (event.key.keysym.mod == KMOD_LSHIFT)
-						ch = event.key.keysym.sym-32;
+						ch = event.key.keysym.sym - 32;
 					else
 						ch = event.key.keysym.sym;
 					filename.push_back(ch);
@@ -54,7 +54,7 @@ void funkcja1()
 				if (event.key.keysym.sym == SDLK_RETURN) //enter
 					done = true;
 				if (event.key.keysym.sym == SDLK_BACKSPACE)
-					if(!filename.empty())
+					if (!filename.empty())
 						filename.pop_back();
 				if (event.key.keysym.sym == SDLK_ESCAPE)
 				{
@@ -64,13 +64,24 @@ void funkcja1()
 				break;
 			}
 
-			inactive = false;
-			try {
-				ladujBMP(&input_file, filename.c_str(), 0, 0);
-			}
-			catch (std::exception &e) {
+			//testowanie czy plik o podanej nazwie jest w folderze
+			file.open(filename.c_str(), ios::in);
+			if (!file.is_open())
+			{
 				inactive = true;
 			}
+			else
+			{
+				inactive = false;
+				file.close();
+			}
+
+			//sprawdzanie rozszerzenia
+			if (filename.find(".bmp") != filename.npos)
+				bmp = true;
+			else if (filename.find(".pc") != filename.npos)
+				bmp = false;
+
 
 			if (inactive == false)
 				filename_text.change_text(25, 100, filename, color_g, 0);
@@ -86,13 +97,39 @@ void funkcja1()
 			top_text2.show(screen);
 			filename_text.show(screen);
 		}
-	
+
 		if (SDL_Flip(screen) == -1)
 		{
 			clean_up();
 			exit(EXIT_FAILURE);
 		}
 	}
+
+	//otwieranie pliow
+	if (inactive == false && bmp == true)
+	{
+		try {
+			ladujBMP(&input_file, filename.c_str(), 0, 0);
+		}
+		catch (std::exception &e) {
+			clean_up();
+			exit(EXIT_FAILURE);
+		}
+		if (input_file_pc.is_open())
+			input_file_pc.close();
+	}
+	else if (inactive == false && bmp == false)
+	{
+		input_file_pc.open(filename.c_str(), ios::in | ios::binary);
+		if (!input_file_pc.is_open())
+		{
+			clean_up();
+			exit(EXIT_FAILURE);
+		}
+		if (input_file != nullptr)
+			SDL_FreeSurface(input_file);
+	}
+	
 	event.quit.type = 0;
 }
 

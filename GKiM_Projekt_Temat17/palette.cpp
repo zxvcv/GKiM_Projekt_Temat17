@@ -32,6 +32,11 @@ IMPOSED_PALETTE_TYPE imposed_palette::returnPaletteType()
 	return palette_type;
 }
 
+int imposed_palette::getSize()
+{
+	return palette.size();
+}
+
 void imposed_palette::init_palette1()
 {
 	

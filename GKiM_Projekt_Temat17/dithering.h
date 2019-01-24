@@ -15,10 +15,10 @@ struct kolor {
 
 
 /*
-funkcja wykonujaca operacjê ditheringu, zwracaj¹ca wskaznik do tablicy dwuwymiarowej (o wymiarach wigth i height)
-@param surface	wskaznik do obiektu w którym otwarty jest obraz na którym ma zostac wykonana operacja ditheringu
-@param palette	paleta dla której ma zostac wykonana operacja ditheringu
-@return			wskaznik na tablice pikseli podanego obrazu z wykonanym ditheringiem w oparciu o podan¹ palete
+funkcja wykonujaca operacjê ditheringu
+@param surface	wskaznik do obiektu z ktorego beda ponierane piksele obrazu
+@param palette	przekazana paleta dla której ma zostac wykonana operacja ditheringu
+@param output	tablica do ktorej zostana wypisane dane wyjsciowe
 @EXCEPTIONS:	---
 */
 void dithering(SDL_Surface *surface, std::vector<SDL_Color> &palette, vector<Uint8> &output);

@@ -2,142 +2,93 @@
 #include "lz77.h"
 #include <list>
 
-/* destruktor w razie w nazwa_vektora.~vector<int>(); */
 
-void lz77_conversion(SDL_Surface *surface, vector<Uint8> &output, queue<kod> &zakodowane)
+void lz77_compression(vector<Uint8> &input, queue<kod> &coded)
 {
-	unsigned short width = surface->w;
-	unsigned short height = surface->h;
-	int dlugoscSlownika = 16384;
-	int dlugoscWejscia = 512;
+	//long long int lengSlownika = 128;
+	long long int lengSlownika = 2048;
+	//unsigned int lengSlownika = 16384;
 
-	kod znak;
-	int i, j, k;
+	kod out;
+	long long int pos = 0; //wskaznik aktualnego polozenia
+	long long int data_left = input.size(); //iloœc pozosta³ych danych do wysweitlenia
+	
+	long long int bSlownik; //poczatek slownika
+	long long int eSlownik; //koniec slownika
 
-	Uint8 temp = output[0];
+	long long int match; //ilosc miejsc gdize nast¹pi³o dopasowanie przed aktualna pozycja
+	long long int match_old;
+	long long int lMatch; //dlugosc dopasowania
+	long long int lMatch_old;
+	long long int lMatch2; //do wielokrotnego dopasowania wartosci gdy "wyjdziemy za bufor"
 
-	output.insert(output.begin(), dlugoscSlownika, temp);
+	while (data_left > 1)
+	{
+		bSlownik = (pos <= lengSlownika) ? 0 : pos - lengSlownika;
+		eSlownik = pos;
 
-	int pSlownika = 0;
-	int kSlownika = dlugoscSlownika - 1;
+		match = 0;
+		match_old = 0;
+		lMatch = 0;
+		lMatch_old = 0;
+		lMatch2 = 0;
 
-	int pWejscia = dlugoscSlownika;
-	int kWejscia = dlugoscSlownika + dlugoscWejscia - 1;
+		for (long long int i = bSlownik; i < eSlownik; ++i) //przejscie po slowniku
+		{
+			if (input[i] == input[pos])
+			{
+				match = i - pos;
 
-	int indexWejscia = pWejscia;
+				lMatch = lMatch2 = 0;
+				while (input[i + lMatch2] == input[pos + lMatch])
+				{
+					++lMatch; ++lMatch2;
+					if (i + lMatch2 >= eSlownik)
+						lMatch2 = 0;
 
-	int tile;
-	int tgdzie;
-	int ile = 0;
-	int gdzie;
-	int wartosc;
-	bool flaga;
-
-	int rOutput = output.size();
-
-	if (kWejscia >= output.size()) {
-		kWejscia = output.size() - 1;
-	}
-
-	znak.ile = 0;
-	znak.gdzie = 0;
-	znak.wartosc = /*indexWejscia < output.size() ?*/ output[indexWejscia]/* : 14*/;
-	zakodowane.push(znak);
-	pSlownika += 1;
-	kSlownika += 1;
-	pWejscia += 1;
-	kWejscia += 1;
-
-	if (kWejscia >= output.size()) {
-		kWejscia = output.size() - 1;
-	}
-	if (kSlownika >= output.size()) {
-		kSlownika = output.size() - 1;
-	}
-
-	list<int> znaki[64];
-	list<int> ostatnie;
-
-	for (i = pSlownika; i <= kSlownika; ++i) {
-		znaki[output[i]].push_back(i);
-	}
-
-	for (i = 0; i < dlugoscWejscia; ++i) {
-		ostatnie.push_back(output[i]);
-	}
-
-	Uint8 test;
-
-	for (i = indexWejscia; i < rOutput; ++i) {
-		ile = 0;
-		gdzie = 0;
-		tile = 0;
-		tgdzie = 0;
-
-		test = output[pWejscia];
-
-		for (list<int>::iterator it = znaki[test].begin(); it != znaki[test].end(); ++it) {
-			if (output[*it] == output[pWejscia]) {
-				tile = 0;
-				tgdzie = pWejscia - *it;
-
-				flaga = true;
-
-				//przeszukuje dalsza czesc slownika
-				for (k = *it; k < kWejscia && flaga == true && pWejscia + tile <= kWejscia; ++k) {
-
-					if (output[k] == output[pWejscia + tile]) {
-						++tile;
-					}
-					else {
-						flaga = false;
-					}
+					if (pos + lMatch == input.size() - 1)
+						break;
 				}
 
-				if (tile > ile) {
-					ile = tile;
-					gdzie = tgdzie;
+				if (lMatch >= lMatch_old)
+				{
+					match_old = match;
+					lMatch_old = lMatch;
 				}
 			}
 		}
 
+		out.ile = lMatch_old;
+		out.gdzie = match_old;
+		if (pos + lMatch_old < input.size());
+			out.wartosc = input[pos + lMatch_old];
+			coded.push(out);
 
-		int end = kSlownika + ile + 1;
+		data_left -= lMatch_old + 1;
+		pos += lMatch_old + 1;
+	}
+}
 
-		if (end >= output.size()) {
-			end = output.size() - 1;
+void lz77_decompression(vector<kod> &zakodowane, file_PC_header &header, vector<Uint8> &data)
+{
+	data.clear();
+	data.resize(header.width*header.height);
+	
+	int data_num = 0;
+	int ptr1 = 0;
+	int match_size = 0;
+	for (auto i : zakodowane)
+	{
+		ptr1 = i.gdzie;
+		for (int j = 0; j < i.ile; ++j)
+		{
+			data[data_num+j] = data[data_num + ptr1];
+			++ptr1;
+			if (ptr1 == 0)
+				ptr1 = i.gdzie;
 		}
-
-		if (kSlownika + 1 < output.size()) {
-			for (k = kSlownika + 1; k <= end; ++k) {
-				znaki[output[k]].push_back(k);
-				ostatnie.push_back(output[k]);
-			}
-		}
-
-		if (kSlownika + 1 < output.size()) {
-			for (k = kSlownika + 1; k <= end; ++k) {
-				znaki[ostatnie.front()].pop_front();
-				ostatnie.pop_front();
-			}
-		}
-
-		znak.ile = ile;
-		znak.gdzie = gdzie;
-		indexWejscia = indexWejscia + ile + 1;
-		znak.wartosc = indexWejscia < output.size() ? output[indexWejscia] : 14;
-		zakodowane.push(znak);
-
-		pSlownika += ile + 1;
-		kSlownika += ile + 1;
-		pWejscia += ile + 1;
-		kWejscia += ile + 1;
-		if (kWejscia >= output.size()) {
-			kWejscia = output.size() - 1;
-		}
-		if (kSlownika >= output.size()) {
-			kSlownika = output.size() - 1;
-		}
-		i += ile;
+		data_num += i.ile;
+		data[data_num] = i.wartosc;
+		++data_num;
 	}
 }

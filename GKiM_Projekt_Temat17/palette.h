@@ -13,8 +13,8 @@ struct color_ocurrence {
 };
 
 struct kod {
-	int ile;
-	int gdzie;
+	int16_t ile;
+	int16_t gdzie;
 	Uint8 wartosc;
 };
 
@@ -32,6 +32,7 @@ public:
 	~imposed_palette() {}
 	std::vector<SDL_Color> &returnPalette();
 	IMPOSED_PALETTE_TYPE returnPaletteType();
+	int getSize();
 
 private:
 	std::vector<SDL_Color> palette;
