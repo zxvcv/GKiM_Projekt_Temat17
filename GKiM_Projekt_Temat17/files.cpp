@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "files.h"
 
-void save_to_PC(SDL_Surface *surface, string outFileName, queue<kod> &zakodowane)
+void save_to_PC(SDL_Surface *surface, string outFileName, queue<kod> &zakodowane, PALETTE_TYPE palette_type)
 {
-	file_PC_header header;
+	PC_header header;
 	header.p = 'P';
 	header.c = 'C';
 	header.width = surface->w;
@@ -11,7 +11,7 @@ void save_to_PC(SDL_Surface *surface, string outFileName, queue<kod> &zakodowane
 	header.offset = 13;
 	header.dataLength = zakodowane.size();
 	header.file_size = 15 + zakodowane.size() * 9;
-	header.paletteNUM = 1;
+	header.paletteNUM = static_cast<uint16_t>(palette_type);
 	header.unused = 0;
 
 	std::ofstream zapis;
@@ -38,7 +38,7 @@ void save_to_PC(SDL_Surface *surface, string outFileName, queue<kod> &zakodowane
 	zapis.close();
 }
 
-void get_from_PC(ifstream &ifile, file_PC_header &header, vector<kod> &zakodowane)
+void get_from_PC(ifstream &ifile, PC_header &header, vector<kod> &zakodowane)
 {
 	char *buff = nullptr;
 	int buff_size;
@@ -53,7 +53,7 @@ void get_from_PC(ifstream &ifile, file_PC_header &header, vector<kod> &zakodowan
 	ptr += buff_size;
 
 
-	header = *((file_PC_header*)(buff));
+	header = *((PC_header*)(buff));
 	delete[] buff;
 
 	if (header.p != 'P' || header.c != 'C')
@@ -83,7 +83,7 @@ void get_from_PC(ifstream &ifile, file_PC_header &header, vector<kod> &zakodowan
 	delete[] buff;
 }
 
-void save_to_BMP(file_PC_header &header, vector<Uint8> &data, std::vector<SDL_Color> &palette)
+void save_to_BMP(PC_header &header, vector<Uint8> &data, std::vector<SDL_Color> &palette)
 {
 	SDL_Surface *surface;
 

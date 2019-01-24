@@ -13,7 +13,7 @@ using namespace std;
 #include "files.h"
 
 
-extern struct file_PC_header;
+extern class PC_header;
 
 /*
 funkcja kompresujaca dane wedlug algorytmu lz77
@@ -30,10 +30,8 @@ funkcja wykonujaca operacjê ditheringu
 @param data			tablica danych wyjsciowych (odkodowanych)
 @EXCEPTIONS:	---
 */
-void lz77_decompression(vector<kod> &zakodowane, file_PC_header &header, vector<Uint8> &data);
+void lz77_decompression(vector<kod> &zakodowane, PC_header &header, vector<Uint8> &data);
 
-
-void lz77_conversion2(SDL_Surface *surface, vector<Uint8> &output, queue<kod> &zakodowane);
 
 #endif // !LZ77_H
 

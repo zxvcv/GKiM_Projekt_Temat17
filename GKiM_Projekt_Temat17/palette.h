@@ -19,28 +19,10 @@ struct kod {
 };
 
 
-enum IMPOSED_PALETTE_TYPE{
-	IMPOSED_PALETTE_1 = 1, 
-	IMPOSED_PALETTE_2 = 2, 
+enum PALETTE_TYPE {
+	IMPOSED_PALETTE = 1,
+	DEDICATED_PALETTE = 2,
 	SHADERS_OF_GREY_PALETTE = 3
-};
-
-class imposed_palette
-{
-public:
-	imposed_palette(IMPOSED_PALETTE_TYPE type);
-	~imposed_palette() {}
-	std::vector<SDL_Color> &returnPalette();
-	IMPOSED_PALETTE_TYPE returnPaletteType();
-	int getSize();
-
-private:
-	std::vector<SDL_Color> palette;
-	IMPOSED_PALETTE_TYPE palette_type;
-
-	void init_palette1();
-	void init_palette2();
-	void init_palette3();
 };
 
 class dedicated_palette
@@ -59,6 +41,26 @@ private:
 	void count_ocurreces(SDL_Surface *surface);
 	double distance(SDL_Color colorA, SDL_Color colorB);
 	color_ocurrence * closest_pair();
+};
+
+class Palette
+{
+private:
+	std::vector<SDL_Color> palette;
+	PALETTE_TYPE type;
+
+	void init_palette1();
+	void init_palette2();
+	void init_palette3();
+
+public:
+	Palette() {}
+	Palette(PALETTE_TYPE type);
+	~Palette() {}
+	void changePalette(PALETTE_TYPE type);
+	std::vector<SDL_Color> &returnPalette();
+	PALETTE_TYPE returnPaletteType();
+	int getSize();
 };
 
 

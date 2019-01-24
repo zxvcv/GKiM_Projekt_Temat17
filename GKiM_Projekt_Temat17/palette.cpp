@@ -2,16 +2,16 @@
 #include "palette.h"
 
 
-//-----------------imposed_palette-----------------
+//-----------------palette-----------------
 
-imposed_palette::imposed_palette(IMPOSED_PALETTE_TYPE type): palette_type(type)
+Palette::Palette(PALETTE_TYPE type) : type(type)
 {
 	switch (type)
 	{
-	case IMPOSED_PALETTE_1:
+	case IMPOSED_PALETTE:
 		this->init_palette1();
 		break;
-	case IMPOSED_PALETTE_2:
+	case DEDICATED_PALETTE:
 		this->init_palette2();
 		break;
 	case SHADERS_OF_GREY_PALETTE:
@@ -22,24 +22,42 @@ imposed_palette::imposed_palette(IMPOSED_PALETTE_TYPE type): palette_type(type)
 	}
 }
 
-std::vector<SDL_Color> &imposed_palette::returnPalette()
+void Palette::changePalette(PALETTE_TYPE type)
+{
+	palette.clear();
+	switch (type)
+	{
+	case IMPOSED_PALETTE:
+		this->init_palette1();
+		break;
+	case DEDICATED_PALETTE:
+		this->init_palette2();
+		break;
+	case SHADERS_OF_GREY_PALETTE:
+		this->init_palette3();
+		break;
+	default:
+		break;
+	}
+}
+
+std::vector<SDL_Color> &Palette::returnPalette()
 {
 	return palette;
 }
 
-IMPOSED_PALETTE_TYPE imposed_palette::returnPaletteType()
+PALETTE_TYPE Palette::returnPaletteType()
 {
-	return palette_type;
+	return type;
 }
 
-int imposed_palette::getSize()
+int Palette::getSize()
 {
 	return palette.size();
 }
 
-void imposed_palette::init_palette1()
+void Palette::init_palette1()
 {
-	
 	palette = { {   0,   0,   0 }, {   0,   0,  85 }, {   0,   0, 171 }, {   0,   0, 255 },
 				{   0,  85,   0 }, {   0,  85,  85 }, {   0,  85, 171 }, {   0,  85, 255 },
 				{   0, 171,   0 }, {   0, 171,  85 }, {   0, 171, 171 }, {   0, 171, 255 },
@@ -56,31 +74,34 @@ void imposed_palette::init_palette1()
 				{ 255,  85,   0 }, { 255,  85,  85 }, { 255,  85, 171 }, { 255,  85, 255 },
 				{ 255, 171,   0 }, { 255, 171,  85 }, { 255, 171, 171 }, { 255, 171, 255 },
 				{ 255, 255,   0 }, { 255, 255,  85 }, { 255, 255, 171 }, { 255, 255, 255 } };
-
 }
 
-void imposed_palette::init_palette2()
+void Palette::init_palette2()
 {
-	palette = { {   0,   0,   0 }, {   0,   0,  64 }, {   0,   0, 128 }, {   0,   0, 192 },
-				{   0,  64,   0 }, {   0,  64,  64 }, {   0,  64, 128 }, {   0,  64, 192 },
-				{   0, 128,   0 }, {   0, 128,  64 }, {   0, 128, 128 }, {   0, 128, 192 },
-				{   0, 192,   0 }, {   0, 192,  64 }, {   0, 192, 128 }, {   0, 192, 192 },
-				{  64,   0,   0 }, {  64,   0,  64 }, {  64,   0, 128 }, {  64,   0, 192 },
-				{  64,  64,   0 }, {  64,  64,  64 }, {  64,  64, 128 }, {  64,  64, 192 },
-				{  64, 128,   0 }, {  64, 128,  64 }, {  64, 128, 128 }, {  64, 128, 192 },
-				{  64, 192,   0 }, {  64, 192,  64 }, {  64, 192, 128 }, {  64, 192, 192 },
-				{ 128,   0,   0 }, { 128,   0,  64 }, { 128,   0, 128 }, { 128,   0, 192 },
-				{ 128,  64,   0 }, { 128,  64,  64 }, { 128,  64, 128 }, { 128,  64, 192 },
-				{ 128, 128,   0 }, { 128, 128,  64 }, { 128, 128, 128 }, { 128, 128, 192 },
-				{ 128, 192,   0 }, { 128, 192,  64 }, { 128, 192, 128 }, { 128, 192, 192 },
-				{ 192,   0,   0 }, { 192,   0,  64 }, { 192,   0, 128 }, { 192,   0, 192 },
-				{ 192,  64,   0 }, { 192,  64,  64 }, { 192,  64, 128 }, { 192,  64, 192 },
-				{ 192, 128,   0 }, { 192, 128,  64 }, { 192, 128, 128 }, { 192, 128, 192 },
-				{ 192, 192,   0 }, { 192, 192,  64 }, { 192, 192, 128 }, { 192, 192, 192 } };
+	//dedicated_palette dpalette;
+	//dpalette.search_palette()
 
+
+
+	//palette = { {   0,   0,   0 }, {   0,   0,  64 }, {   0,   0, 128 }, {   0,   0, 192 },
+	//			{   0,  64,   0 }, {   0,  64,  64 }, {   0,  64, 128 }, {   0,  64, 192 },
+	//			{   0, 128,   0 }, {   0, 128,  64 }, {   0, 128, 128 }, {   0, 128, 192 },
+	//			{   0, 192,   0 }, {   0, 192,  64 }, {   0, 192, 128 }, {   0, 192, 192 },
+	//			{  64,   0,   0 }, {  64,   0,  64 }, {  64,   0, 128 }, {  64,   0, 192 },
+	//			{  64,  64,   0 }, {  64,  64,  64 }, {  64,  64, 128 }, {  64,  64, 192 },
+	//			{  64, 128,   0 }, {  64, 128,  64 }, {  64, 128, 128 }, {  64, 128, 192 },
+	//			{  64, 192,   0 }, {  64, 192,  64 }, {  64, 192, 128 }, {  64, 192, 192 },
+	//			{ 128,   0,   0 }, { 128,   0,  64 }, { 128,   0, 128 }, { 128,   0, 192 },
+	//			{ 128,  64,   0 }, { 128,  64,  64 }, { 128,  64, 128 }, { 128,  64, 192 },
+	//			{ 128, 128,   0 }, { 128, 128,  64 }, { 128, 128, 128 }, { 128, 128, 192 },
+	//			{ 128, 192,   0 }, { 128, 192,  64 }, { 128, 192, 128 }, { 128, 192, 192 },
+	//			{ 192,   0,   0 }, { 192,   0,  64 }, { 192,   0, 128 }, { 192,   0, 192 },
+	//			{ 192,  64,   0 }, { 192,  64,  64 }, { 192,  64, 128 }, { 192,  64, 192 },
+	//			{ 192, 128,   0 }, { 192, 128,  64 }, { 192, 128, 128 }, { 192, 128, 192 },
+	//			{ 192, 192,   0 }, { 192, 192,  64 }, { 192, 192, 128 }, { 192, 192, 192 } };
 }
 
-void imposed_palette::init_palette3()
+void Palette::init_palette3()
 {
 	palette = { {   0,   0,   0 }, {   4,   4,   4 }, {   8,   8,   8 }, {  12,  12,  12 },
 				{  16,  16,  16 }, {  20,  20,  20 }, {  24,  24,  24 }, {  28,  28,  28 },
