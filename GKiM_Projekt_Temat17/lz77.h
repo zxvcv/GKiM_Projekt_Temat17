@@ -33,5 +33,7 @@ funkcja wykonujaca operacjê ditheringu
 void lz77_decompression(vector<kod> &zakodowane, file_PC_header &header, vector<Uint8> &data);
 
 
+void lz77_conversion2(SDL_Surface *surface, vector<Uint8> &output, queue<kod> &zakodowane);
+
 #endif // !LZ77_H
 

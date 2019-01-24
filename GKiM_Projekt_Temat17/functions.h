@@ -16,6 +16,8 @@
 #include <chrono> //debug
 
 using namespace std;
+using tp = std::chrono::time_point<std::chrono::system_clock>; //debug
+using duration = std::chrono::duration<float>; //debug
 
 using tp = std::chrono::time_point<std::chrono::system_clock>;
 using duration = std::chrono::duration<float>;
