@@ -1,19 +1,25 @@
 #include "pch.h"
 #include "files.h"
 
-void save_to_PC(SDL_Surface *surface, string outFileName, queue<kod> &zakodowane, PALETTE_TYPE palette_type)
+void PC_header::set_header(SDL_Surface *surface, int size_zakodowane, Palette &palette)
 {
-	PC_header header;
-	header.p = 'P';
-	header.c = 'C';
-	header.width = surface->w;
-	header.height = surface->h;
-	header.offset = 13;
-	header.dataLength = zakodowane.size();
-	header.file_size = 15 + zakodowane.size() * 9;
-	header.paletteNUM = static_cast<uint16_t>(palette_type);
-	header.unused = 0;
+	p = 'P';
+	c = 'C';
+	width = surface->w;
+	height = surface->h;
+	offset = 14;
+	dataLength = size_zakodowane;
+	if(palette.returnPaletteType() == DEDICATED_PALETTE)
+		file_size = offset + sizeof(SDL_Color) * 64 + size_zakodowane * sizeof(kod);
+	else
+		file_size = offset + sizeof(SDL_Color) * 64 + size_zakodowane * sizeof(kod);
+	paletteNUM = static_cast<uint8_t>(palette.returnPaletteType());
+	unused = 0;
+}
 
+
+void save_to_PC(SDL_Surface *surface, string outFileName, queue<kod> &zakodowane, PC_header &header, Palette &palette)
+{
 	std::ofstream zapis;
 	try {
 		zapis.open(outFileName, ios::binary);
@@ -26,6 +32,15 @@ void save_to_PC(SDL_Surface *surface, string outFileName, queue<kod> &zakodowane
 	//zapis nag³ówka
 	zapis.write((char*)&(header), sizeof(header));
 	
+	zapis.seekp(header.offset, zapis.beg);
+	if (header.paletteNUM == DEDICATED_PALETTE)
+	{
+		//zapis palety dedykowanej
+		for(int i=0; i<64;++i)
+			zapis.write((char*)&palette.returnPalette()[i], sizeof(SDL_Color));
+		zapis.seekp(header.offset + sizeof(SDL_Color) * 64, zapis.beg);
+	}
+		
 	//zapis danych
 	kod val;
 	while (!zakodowane.empty())
@@ -38,7 +53,7 @@ void save_to_PC(SDL_Surface *surface, string outFileName, queue<kod> &zakodowane
 	zapis.close();
 }
 
-void get_from_PC(ifstream &ifile, PC_header &header, vector<kod> &zakodowane)
+void get_from_PC(ifstream &ifile, PC_header &header, vector<kod> &zakodowane, Palette &palette)
 {
 	char *buff = nullptr;
 	int buff_size;
@@ -49,9 +64,8 @@ void get_from_PC(ifstream &ifile, PC_header &header, vector<kod> &zakodowane)
 	buff = new char[buff_size];
 	
 	ifile.seekg(0, ifile.beg);
-	ifile.read(buff, buff_size); //mozna zrobic bajt przerwy (wtedy usunac -1)
+	ifile.read(buff, buff_size);
 	ptr += buff_size;
-
 
 	header = *((PC_header*)(buff));
 	delete[] buff;
@@ -63,7 +77,15 @@ void get_from_PC(ifstream &ifile, PC_header &header, vector<kod> &zakodowane)
 		exit(EXIT_FAILURE);
 	}
 
-
+	palette.changePalette(IMPOSED_PALETTE);
+	ifile.seekg(header.offset, ifile.beg);
+	if (header.paletteNUM == DEDICATED_PALETTE)
+	{
+		//odczyt palety dedykowanej
+		for (int i = 0; i < 64; ++i)
+			ifile.read((char*)&palette.returnPalette()[i], sizeof(SDL_Color));
+		ifile.seekg(header.offset + sizeof(SDL_Color) * 64, ifile.beg);
+	}
 	zakodowane.clear();
 	zakodowane.resize(header.dataLength);
 
@@ -71,7 +93,7 @@ void get_from_PC(ifstream &ifile, PC_header &header, vector<kod> &zakodowane)
 	buff = new char[buff_size];
 	//czytanie danych
 	kod val;
-
+	ptr = ifile.tellg();
 	for(int i=0; i<header.dataLength; ++i)
 	{
 		ifile.seekg(ptr, ifile.beg);

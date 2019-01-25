@@ -9,7 +9,8 @@
 
 using namespace std;
 
-struct PC_header {
+class PC_header {
+public:
 	uint8_t p;
 	uint8_t c;
 
@@ -21,6 +22,9 @@ struct PC_header {
 	uint16_t file_size;
 	uint8_t paletteNUM;
 	uint8_t unused;
+
+	PC_header() {}
+	void set_header(SDL_Surface *surface, int size_zakodowane, Palette &palette);
 };
 
 
@@ -32,7 +36,7 @@ funkcja zapisuj¹ca dane do pliku o rozszerzeniu PC
 @param palette_type	typ uzytej palety
 @EXCEPTIONS:	---
 */
-void save_to_PC(SDL_Surface *surface, string outFileName, queue<kod> &zakodowane, PALETTE_TYPE palette_type);
+void save_to_PC(SDL_Surface *surface, string outFileName, queue<kod> &zakodowane, PC_header &header, Palette &palette);
 
 /*
 funkcja wykonujaca operacjê ditheringu
@@ -41,7 +45,7 @@ funkcja wykonujaca operacjê ditheringu
 @param zakodowane	tablica pobranych zakodowanych wartosci z pliku PC
 @EXCEPTIONS:	---
 */
-void get_from_PC(ifstream &ifile, PC_header &header, vector<kod> &zakodowane);
+void get_from_PC(ifstream &ifile, PC_header &header, vector<kod> &zakodowane, Palette &palette);
 
 /*
 funkcja zapisujaca dane do pliku BMP
