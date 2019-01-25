@@ -3,14 +3,11 @@
 
 #include <SDL.h>
 #include <vector>
-#include "SDL_functions.h"
 #include <algorithm>
+#include "SDL_functions.h"
+#include "medianCut.h"
 
-struct color_ocurrence {
-	SDL_Color color;
-	int occurrences;
-	bool compared;
-};
+extern SDL_Surface *input_file;
 
 struct kod {
 	int16_t ile;
@@ -25,23 +22,6 @@ enum PALETTE_TYPE {
 	SHADERS_OF_GREY_PALETTE = 3
 };
 
-class dedicated_palette
-{
-public:
-	dedicated_palette() {}
-	~dedicated_palette() {}
-	void search_palette(SDL_Surface *surface);
-	std::vector<SDL_Color> &returnPalette();
-
-private:
-	std::vector<color_ocurrence> occurrences;
-	std::vector<SDL_Color> palette;
-
-	int already_occurred(SDL_Color pixel);
-	void count_ocurreces(SDL_Surface *surface);
-	double distance(SDL_Color colorA, SDL_Color colorB);
-	color_ocurrence * closest_pair();
-};
 
 class Palette
 {

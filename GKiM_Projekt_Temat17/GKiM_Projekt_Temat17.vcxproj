@@ -166,6 +166,7 @@
     <ClInclude Include="files.h" />
     <ClInclude Include="functions.h" />
     <ClInclude Include="lz77.h" />
+    <ClInclude Include="medianCut.h" />
     <ClInclude Include="menu_functions.h" />
     <ClInclude Include="l_exceptions.h" />
     <ClInclude Include="palette.h" />
@@ -179,6 +180,7 @@
     <ClCompile Include="files.cpp" />
     <ClCompile Include="functions.cpp" />
     <ClCompile Include="lz77.cpp" />
+    <ClCompile Include="medianCut.cpp" />
     <ClCompile Include="menu_functions.cpp" />
     <ClCompile Include="l_exceptions.cpp" />
     <ClCompile Include="main.cpp" />

@@ -78,22 +78,24 @@ void Palette::init_palette1()
 
 void Palette::init_palette2()
 {
-	palette = { {   0,   0,   0 }, {   0,   0,  64 }, {   0,   0, 128 }, {   0,   0, 192 },
-				{   0,  64,   0 }, {   0,  64,  64 }, {   0,  64, 128 }, {   0,  64, 192 },
-				{   0, 128,   0 }, {   0, 128,  64 }, {   0, 128, 128 }, {   0, 128, 192 },
-				{   0, 192,   0 }, {   0, 192,  64 }, {   0, 192, 128 }, {   0, 192, 192 },
-				{  64,   0,   0 }, {  64,   0,  64 }, {  64,   0, 128 }, {  64,   0, 192 },
-				{  64,  64,   0 }, {  64,  64,  64 }, {  64,  64, 128 }, {  64,  64, 192 },
-				{  64, 128,   0 }, {  64, 128,  64 }, {  64, 128, 128 }, {  64, 128, 192 },
-				{  64, 192,   0 }, {  64, 192,  64 }, {  64, 192, 128 }, {  64, 192, 192 },
-				{ 128,   0,   0 }, { 128,   0,  64 }, { 128,   0, 128 }, { 128,   0, 192 },
-				{ 128,  64,   0 }, { 128,  64,  64 }, { 128,  64, 128 }, { 128,  64, 192 },
-				{ 128, 128,   0 }, { 128, 128,  64 }, { 128, 128, 128 }, { 128, 128, 192 },
-				{ 128, 192,   0 }, { 128, 192,  64 }, { 128, 192, 128 }, { 128, 192, 192 },
-				{ 192,   0,   0 }, { 192,   0,  64 }, { 192,   0, 128 }, { 192,   0, 192 },
-				{ 192,  64,   0 }, { 192,  64,  64 }, { 192,  64, 128 }, { 192,  64, 192 },
-				{ 192, 128,   0 }, { 192, 128,  64 }, { 192, 128, 128 }, { 192, 128, 192 },
-				{ 192, 192,   0 }, { 192, 192,  64 }, { 192, 192, 128 }, { 192, 192, 192 } };
+	load_dedicated_palette(input_file, input_file->w, input_file->h, palette);
+
+	//palette = { {   0,   0,   0 }, {   0,   0,  64 }, {   0,   0, 128 }, {   0,   0, 192 },
+	//			{   0,  64,   0 }, {   0,  64,  64 }, {   0,  64, 128 }, {   0,  64, 192 },
+	//			{   0, 128,   0 }, {   0, 128,  64 }, {   0, 128, 128 }, {   0, 128, 192 },
+	//			{   0, 192,   0 }, {   0, 192,  64 }, {   0, 192, 128 }, {   0, 192, 192 },
+	//			{  64,   0,   0 }, {  64,   0,  64 }, {  64,   0, 128 }, {  64,   0, 192 },
+	//			{  64,  64,   0 }, {  64,  64,  64 }, {  64,  64, 128 }, {  64,  64, 192 },
+	//			{  64, 128,   0 }, {  64, 128,  64 }, {  64, 128, 128 }, {  64, 128, 192 },
+	//			{  64, 192,   0 }, {  64, 192,  64 }, {  64, 192, 128 }, {  64, 192, 192 },
+	//			{ 128,   0,   0 }, { 128,   0,  64 }, { 128,   0, 128 }, { 128,   0, 192 },
+	//			{ 128,  64,   0 }, { 128,  64,  64 }, { 128,  64, 128 }, { 128,  64, 192 },
+	//			{ 128, 128,   0 }, { 128, 128,  64 }, { 128, 128, 128 }, { 128, 128, 192 },
+	//			{ 128, 192,   0 }, { 128, 192,  64 }, { 128, 192, 128 }, { 128, 192, 192 },
+	//			{ 192,   0,   0 }, { 192,   0,  64 }, { 192,   0, 128 }, { 192,   0, 192 },
+	//			{ 192,  64,   0 }, { 192,  64,  64 }, { 192,  64, 128 }, { 192,  64, 192 },
+	//			{ 192, 128,   0 }, { 192, 128,  64 }, { 192, 128, 128 }, { 192, 128, 192 },
+	//			{ 192, 192,   0 }, { 192, 192,  64 }, { 192, 192, 128 }, { 192, 192, 192 } };
 }
 
 void Palette::init_palette3()
@@ -116,107 +118,3 @@ void Palette::init_palette3()
 				{ 240, 240, 240 }, { 244, 244, 244 }, { 248, 248, 248 }, { 252, 252, 252 } };
 }
 
-
-//-----------------dedicated_palette-----------------
-
-int dedicated_palette::already_occurred(SDL_Color pixel)
-{
-	for (int i = 0; i < occurrences.size() - 1; i++)
-	{
-		if ((occurrences[i].color.r == pixel.r) && (occurrences[i].color.g == pixel.g) && (occurrences[i].color.b == pixel.b))
-		{
-			return i;
-		}
-	}
-	return -1;
-}
-
-void dedicated_palette::count_ocurreces(SDL_Surface * surface)
-{
-	int width = input_file->w;
-	int height = input_file->h;
-	/*
-	SDL_Color pixel = getPixel_BMP(surface, 0, 0);
-	if (occurrences.empty()) {
-		color_ocurrence newOccurrence;
-		newOccurrence.color = pixel;
-		newOccurrence.occurrences = 1;
-		newOccurrence.compared = false;
-		occurrences.emplace_back(newOccurrence);
-	}
-	*/
-	for (size_t i = 0; i < width; i++)
-	{
-		for (size_t j = 0; j < height; j++)
-		{
-			SDL_Color pixel = getPixel_BMP(surface, i, j);
-			int occurrenceIndex = already_occurred(pixel);
-
-			if (occurrenceIndex == -1 || occurrences.empty()) {
-				color_ocurrence newOccurrence;
-				newOccurrence.color = pixel;
-				newOccurrence.occurrences = 1;
-				newOccurrence.compared = false;
-				occurrences.emplace_back(newOccurrence);
-			}
-			else {
-				occurrences[occurrenceIndex].occurrences++;
-			}
-
-		}
-	}
-}
-
-double dedicated_palette::distance(SDL_Color colorA, SDL_Color colorB)
-{
-	int r = (colorA.r - colorB.r) * (colorA.r - colorB.r);
-	int g = (colorA.g - colorB.g) * (colorA.g - colorB.g);
-	int b = (colorA.b - colorB.b) * (colorA.b - colorB.b);
-
-	return sqrt(r + g + b);
-}
-
-color_ocurrence * dedicated_palette::closest_pair()
-{
-	color_ocurrence * pair = new color_ocurrence[2];
-	double minDistance = 442; //przekatna szescianu RGB zaokraglona w gore
-
-	for (int i = 0; i < occurrences.size() - 1; i++)
-	{
-		color_ocurrence colorA = occurrences[i];
-		if (colorA.compared == true)
-			continue;
-		for (int j = i + 1; j < occurrences.size(); j++) {
-
-			color_ocurrence colorB = occurrences[j];
-			if (colorB.compared == true)
-				continue;
-			if (distance(colorA.color, colorB.color) < minDistance) {
-
-				minDistance = distance(colorA.color, colorB.color);
-				pair[0] = colorA;
-				pair[1] = colorB;
-			}
-		}
-	}
-
-	return pair;
-}
-
-void dedicated_palette::search_palette(SDL_Surface *surface)
-{
-	count_ocurreces(surface);
-	while (palette.size() < 64) {
-		color_ocurrence * pair;
-		pair = closest_pair();
-		if (pair[0].occurrences < pair[1].occurrences)
-			palette.emplace_back(pair[1].color);
-		else
-			palette.emplace_back(pair[0].color);
-	}
-}
-
-std::vector<SDL_Color> &dedicated_palette::returnPalette()
-{
-	return palette;
-}

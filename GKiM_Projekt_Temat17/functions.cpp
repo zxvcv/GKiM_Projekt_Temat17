@@ -95,12 +95,19 @@ void BMPtoPC_DedicatedPallete()
 
 	vector<Uint8> data;
 	queue<kod> zakodowane;
-	Palette palette(DEDICATED_PALETTE);
 	PC_header header;
 
 	tp time1;
 	duration time2;
 
+	//obliczanie palety dedykowanej
+	cout << "[INFO] dedicated_palette <start>" << endl;
+	time1 = std::chrono::system_clock::now();
+
+	Palette palette(DEDICATED_PALETTE);
+
+	time2 = std::chrono::system_clock::now() - time1;
+	cout << "[INFO] dedicated_palette <end>, czas: " << time2.count() << endl;
 
 	//nearest_neighbor
 	cout << "[INFO] nearest_neighbor <start>" << endl;
@@ -140,11 +147,19 @@ void BMPtoPC_DedicatedPalleteDithering()
 	
 	vector<Uint8> data;
 	queue<kod> zakodowane;
-	Palette palette(DEDICATED_PALETTE);
 	PC_header header;
 
 	tp time1;
 	duration time2;
+
+	//obliczanie palety dedykowanej
+	cout << "[INFO] dedicated_palette <start>" << endl;
+	time1 = std::chrono::system_clock::now();
+
+	Palette palette(DEDICATED_PALETTE);
+
+	time2 = std::chrono::system_clock::now() - time1;
+	cout << "[INFO] dedicated_palette <end>, czas: " << time2.count() << endl;
 
 	//nearest_neighbor
 	cout << "[INFO] dithering <start>" << endl;

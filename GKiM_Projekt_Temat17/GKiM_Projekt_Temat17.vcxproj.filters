@@ -48,6 +48,9 @@
     <ClInclude Include="data_preparation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="medianCut.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -84,6 +87,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="data_preparation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="medianCut.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
