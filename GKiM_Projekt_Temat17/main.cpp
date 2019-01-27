@@ -4,8 +4,7 @@
 #include <cstdlib>
 #include <SDL_ttf.h>
 #include <SDL.h>
-#include <math.h>
-#define pi 3.14
+
 #include <time.h>
 #include "SDL_functions.h"
 #include "view.h"

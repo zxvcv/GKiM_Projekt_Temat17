@@ -6,6 +6,8 @@ void nearest_neighbor(SDL_Surface *surface, std::vector<SDL_Color> &palette, vec
 {
 	unsigned short width = surface->w;
 	unsigned short height = surface->h;
+	
+	output.resize(width*height);
 
 	output.clear();
 	output.reserve(width*height);

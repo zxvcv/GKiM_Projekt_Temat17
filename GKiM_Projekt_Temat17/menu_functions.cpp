@@ -30,8 +30,14 @@ void funkcja1()
 				break;
 
 			case SDL_KEYDOWN:
-				if (event.key.keysym.sym == SDLK_MINUS && event.key.keysym.mod == KMOD_LSHIFT)
+				if (event.key.keysym.sym == SDLK_MINUS && !(event.key.keysym.mod == KMOD_LSHIFT || event.key.keysym.mod == KMOD_RSHIFT))
+					filename.push_back('-');
+				if (event.key.keysym.sym == SDLK_MINUS && (event.key.keysym.mod == KMOD_LSHIFT || event.key.keysym.mod == KMOD_RSHIFT))
 					filename.push_back('_');
+				if (event.key.keysym.sym == SDLK_SEMICOLON && !(event.key.keysym.mod == KMOD_LSHIFT || event.key.keysym.mod == KMOD_RSHIFT))
+					filename.push_back(';');
+				if (event.key.keysym.sym == SDLK_SEMICOLON && (event.key.keysym.mod == KMOD_LSHIFT || event.key.keysym.mod == KMOD_RSHIFT))
+					filename.push_back(':');
 				if (event.key.keysym.sym == SDLK_SPACE)
 					filename.push_back(' ');
 				if (event.key.keysym.sym == SDLK_PERIOD)
@@ -306,17 +312,19 @@ void funkcja5()
 		color_s.r = 200; color_s.g = 200; color_s.b = 200; //szary
 
 		Menu3.texts.push_back(Text(100, 20, "INFORMACJE", color_g, 1));
-		Menu3.texts.push_back(Text(25, 100, "linijka1", color_s, 0));
-		Menu3.texts.push_back(Text(25, 125, "linijka2", color_s, 0));
-		Menu3.texts.push_back(Text(25, 150, "linijka3", color_s, 0));
-		Menu3.texts.push_back(Text(25, 175, "linijka4", color_s, 0));
-		Menu3.texts.push_back(Text(25, 200, "linijka5", color_s, 0));
-		Menu3.texts.push_back(Text(25, 225, "linijka6", color_s, 0));
-		Menu3.texts.push_back(Text(25, 250, "linijka7", color_s, 0));
-		Menu3.texts.push_back(Text(25, 275, "linijka8", color_s, 0));
-		Menu3.texts.push_back(Text(25, 300, "linijka9", color_s, 0));
-		Menu3.texts.push_back(Text(25, 325, "linijka10", color_s, 0));
-		Menu3.texts.push_back(Text(25, 350, "...", color_s, 0));
+		Menu3.texts.push_back(Text(25, 100, "   Program wykonuje operacje konwersji pliku BMP na plik PC. W tym celu wykorzystywane sa", color_s, 0));
+		Menu3.texts.push_back(Text(25, 125, "algorytmy: wyszukiwania najblizszego sasiada, ditheringu, kompresji/dekompresji lz77,", color_s, 0));
+		Menu3.texts.push_back(Text(25, 150, "wyszukiwania palety dedykowanej (median Cut), zapisu i odczytu do pliku BMP i PC.", color_s, 0));
+		Menu3.texts.push_back(Text(25, 175, "", color_s, 0));
+		Menu3.texts.push_back(Text(25, 200, "   Uzyte algorytmy zaleza od wybranego sposobu konwersji BMP -> PC, lub zapisanyc", color_s, 0));
+		Menu3.texts.push_back(Text(25, 225, "w pliku PC danych w jaki sposób (jakimi algorytmami) zostal on zapisany.", color_s, 0));
+		Menu3.texts.push_back(Text(25, 250, "", color_s, 0));
+		Menu3.texts.push_back(Text(25, 275, "Plik wejsciowy: nazwa wybierana dowolnie w opcji \"wprowadz nazwe obrazka\"", color_s, 0));
+		Menu3.texts.push_back(Text(25, 300, "Plik wyjsciowy: nazwa narzucona: ~/plik.pc,  ", color_s, 0));
+		Menu3.texts.push_back(Text(25, 325, "", color_s, 0));
+		Menu3.texts.push_back(Text(25, 350, "Przy wyborze nazwy pliku mo¿na pos³ugiwac sie literami (bez polskich znaków), cyframi,", color_s, 0));
+		Menu3.texts.push_back(Text(25, 375, "   i podanymi znakami:    -    _    ;    :    (spacja)    .    /    \\", color_s, 0));
+	
 
 		Menu3.texts.push_back(Text(600, 475, "Projekt wykonali:", color_s, 0));
 		Menu3.texts.push_back(Text(600, 500, "  Karol Patko", color_s, 0));

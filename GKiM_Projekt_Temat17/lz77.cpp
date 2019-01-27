@@ -16,7 +16,7 @@ void lz77_compression(vector<Uint8> &input, queue<kod> &coded)
 	long long int bSlownik; //poczatek slownika
 	long long int eSlownik; //koniec slownika
 
-	long long int match; //ilosc miejsc gdize nast¹pi³o dopasowanie przed aktualna pozycja
+	long long int match; //ilosc miejsc gdzie nast¹pi³o dopasowanie przed aktualna pozycja
 	long long int match_old;
 	long long int lMatch; //dlugosc dopasowania
 	long long int lMatch_old;

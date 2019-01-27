@@ -21,10 +21,11 @@ void PC_header::set_header(SDL_Surface *surface, int size_zakodowane, Palette &p
 void save_to_PC(SDL_Surface *surface, string outFileName, queue<kod> &zakodowane, PC_header &header, Palette &palette)
 {
 	std::ofstream zapis;
-	try {
-		zapis.open(outFileName, ios::binary);
-	}
-	catch (std::exception &e) {
+	
+	zapis.open(outFileName, ios::binary | ios::out);
+	if (!zapis.is_open())
+	{
+		cout << "nie otwarty!!!";
 		clean_up();
 		exit(EXIT_FAILURE);
 	}
