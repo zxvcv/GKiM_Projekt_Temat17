@@ -7,12 +7,12 @@ void PC_header::set_header(SDL_Surface *surface, int size_zakodowane, Palette &p
 	c = 'C';
 	width = surface->w;
 	height = surface->h;
-	offset = 14;
+	offset = sizeof(PC_header);
 	dataLength = size_zakodowane;
 	if(palette.returnPaletteType() == DEDICATED_PALETTE)
-		file_size = offset + sizeof(SDL_Color) * 64 + size_zakodowane * sizeof(kod);
+		file_size = offset + sizeof(SDL_Color) * 64 + size_zakodowane * 5;
 	else
-		file_size = offset + sizeof(SDL_Color) * 64 + size_zakodowane * sizeof(kod);
+		file_size = offset + size_zakodowane * sizeof(kod);
 	paletteNUM = static_cast<uint8_t>(palette.returnPaletteType());
 	unused = 0;
 }
@@ -25,7 +25,6 @@ void save_to_PC(SDL_Surface *surface, string outFileName, queue<kod> &zakodowane
 	zapis.open(outFileName, ios::binary | ios::out);
 	if (!zapis.is_open())
 	{
-		cout << "nie otwarty!!!";
 		clean_up();
 		exit(EXIT_FAILURE);
 	}
@@ -106,8 +105,17 @@ void get_from_PC(ifstream &ifile, PC_header &header, vector<kod> &zakodowane, Pa
 	delete[] buff;
 }
 
-void save_to_BMP(PC_header &header, vector<Uint8> &data, std::vector<SDL_Color> &palette)
+void save_to_BMP(PC_header &header, string outFileName, vector<Uint8> &data, std::vector<SDL_Color> &palette)
 {
+	std::ofstream zapis;
+	zapis.open(outFileName, ios::binary);
+	if (!zapis.is_open())
+	{
+		clean_up();
+		exit(EXIT_FAILURE);
+	}
+	zapis.close();
+
 	SDL_Surface *surface;
 
 	surface = SDL_CreateRGBSurface(0, header.width, header.height, 32, 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
@@ -133,5 +141,5 @@ void save_to_BMP(PC_header &header, vector<Uint8> &data, std::vector<SDL_Color> 
 	}
 	SDL_UnlockSurface(surface);
 
-	zapiszBMP(&surface, "mojBMP.bmp");
+	zapiszBMP(&surface, outFileName.c_str());
 }

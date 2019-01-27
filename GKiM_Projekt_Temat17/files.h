@@ -18,8 +18,8 @@ public:
 	uint16_t height;
 	uint16_t offset;
 
-	uint16_t dataLength;
-	uint16_t file_size;
+	uint32_t dataLength;
+	uint32_t file_size;
 	uint8_t paletteNUM;
 	uint8_t unused;
 
@@ -49,11 +49,12 @@ void get_from_PC(ifstream &ifile, PC_header &header, vector<kod> &zakodowane, Pa
 
 /*
 funkcja zapisujaca dane do pliku BMP
-@param header	struktura nag³ówka zapisywanego do pliku
-@param data		tablica danych do zapisaniaa do pliku
-@param palette	tablica palety kolorów u¿ytych do zapisania wartoœci w pliku PC
-@EXCEPTIONS:	---
+@param header		struktura nag³ówka zapisywanego do pliku
+@param outFileName	nazwa pliku wyjsciowego
+@param data			tablica danych do zapisaniaa do pliku
+@param palette		tablica palety kolorów u¿ytych do zapisania wartoœci w pliku PC
+@EXCEPTIONS:		---
 */
-void save_to_BMP(PC_header &header, vector<Uint8> &data, std::vector<SDL_Color> &palette);
+void save_to_BMP(PC_header &header, string outFileName, vector<Uint8> &data, std::vector<SDL_Color> &palette);
 
 #endif // !FILES_H

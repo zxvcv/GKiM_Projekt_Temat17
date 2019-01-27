@@ -48,7 +48,9 @@ void BMPtoPC_ImposedPallete()
 
 
 	//wyœwietlenie informacji o pliku wynikowym
-	//cout<< "[OUTPUT] "<<"plik.pc"<<
+	cout << "[OUTPUT]: nazwa:                " << "./plik.pc" << endl;
+	cout << "        : ilosc blokow danych:  " << header.dataLength << endl;
+	cout << "        : wielkosc pliku:       " << header.file_size << " B" << endl;
 }
 
 void BMPtoPC_ImposedPalleteDithering()
@@ -92,6 +94,13 @@ void BMPtoPC_ImposedPalleteDithering()
 
 	time2 = chrono::system_clock::now() - time1;
 	cout << "[INFO] save_to_PC <end>, czas: " << time2.count() << endl;
+
+
+
+	//wyœwietlenie informacji o pliku wynikowym
+	cout << "[OUTPUT]: nazwa:                " << "./plik.pc" << endl;
+	cout << "        : ilosc blokow danych:  " << header.dataLength << endl;
+	cout << "        : wielkosc pliku:       " << header.file_size << " B" << endl;
 }
 
 void BMPtoPC_DedicatedPallete()
@@ -143,6 +152,13 @@ void BMPtoPC_DedicatedPallete()
 
 	time2 = chrono::system_clock::now() - time1;
 	cout << "[INFO] save_to_PC <end>, czas: " << time2.count() << endl;
+
+
+
+	//wyœwietlenie informacji o pliku wynikowym
+	cout << "[OUTPUT]: nazwa:                " << "./plik.pc" << endl;
+	cout << "        : ilosc blokow danych:  " << header.dataLength << endl;
+	cout << "        : wielkosc pliku:       " << header.file_size << " B" << endl;
 }
 
 void BMPtoPC_DedicatedPalleteDithering()
@@ -195,6 +211,13 @@ void BMPtoPC_DedicatedPalleteDithering()
 
 	time2 = chrono::system_clock::now() - time1;
 	cout << "[INFO] save_to_PC <end>, czas: " << time2.count() << endl;
+
+
+
+	//wyœwietlenie informacji o pliku wynikowym
+	cout << "[OUTPUT]: nazwa:                " << "./plik.pc" << endl;
+	cout << "        : ilosc blokow danych:  " << header.dataLength << endl;
+	cout << "        : wielkosc pliku:       " << header.file_size << " B" << endl;
 }
 
 void BMPtoPC_ShadersOfGrey()
@@ -239,6 +262,13 @@ void BMPtoPC_ShadersOfGrey()
 
 	time2 = chrono::system_clock::now() - time1;
 	cout << "[INFO] save_to_PC <end>, czas: " << time2.count() << endl;
+
+
+
+	//wyœwietlenie informacji o pliku wynikowym
+	cout << "[OUTPUT]: nazwa:                " << "./plik.pc" << endl;
+	cout << "        : ilosc blokow danych:  " << header.dataLength << endl;
+	cout << "        : wielkosc pliku:       " << header.file_size << " B" << endl;
 }
 
 void BMPtoPC_ShadersOfGreyDithering()
@@ -282,6 +312,14 @@ void BMPtoPC_ShadersOfGreyDithering()
 
 	time2 = chrono::system_clock::now() - time1;
 	cout << "[INFO] save_to_PC <end>, czas: " << time2.count() << endl;
+
+
+
+
+	//wyœwietlenie informacji o pliku wynikowym
+	cout << "[OUTPUT]: nazwa:                " << "./plik.pc" << endl;
+	cout << "        : ilosc blokow danych:  " << header.dataLength << endl;
+	cout << "        : wielkosc pliku:       " << header.file_size << " B" << endl;
 }
 
 void PCtoBMP()
@@ -333,8 +371,13 @@ void PCtoBMP()
 	cout << "[INFO] save_to_BMP <start>" << endl;
 	time1 = chrono::system_clock::now();
 
-	save_to_BMP(header, data, palette.returnPalette());
+	save_to_BMP(header, "mojBMP.bmp", data, palette.returnPalette());
 
 	time2 = chrono::system_clock::now() - time1;
 	cout << "[INFO] save_to_BMP <end>, czas: " << time2.count() << endl;
+
+
+
+	//wyœwietlenie informacji o pliku wynikowym
+	cout << "[OUTPUT]: nazwa:                " << "./mojBMP.bmp" << endl;
 }
